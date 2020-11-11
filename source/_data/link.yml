@@ -1,0 +1,20 @@
+- class_name: 友情链接
+  class_desc: 我虽然笨，但是我努力
+  link_list:
+    - name: Thyssen Wen
+      link: https://github.com/Thinksky5124
+      avatar: https://jerryc.me/image/avatar.png
+      descr: 一起努力改变世界
+    - name: Hexo
+      link: https://hexo.io/zh-tw/
+      avatar: https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg
+      descr: 快速强大的日志架构
+
+- class_name: 网站
+  class_desc: 值得推荐的网站
+  link_list:
+    - name: BiliBili
+      link: https://www.bilibili.com/
+      avatar: https://i.loli.net/2020/05/14/9ZkGg8v3azHJfM1.png
+      descr: 视频网站
+
