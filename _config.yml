@@ -95,6 +95,9 @@ include:
 exclude:
 ignore:
 
+# Latex_fomulation
+mathjax: true
+
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
