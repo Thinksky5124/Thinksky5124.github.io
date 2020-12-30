@@ -40,4 +40,9 @@ switch sum or maxes order
 solution
 
 
-$$ f(x)=\sum_{i=1}^d max_{S\in\{ {1,2 } \}} sx_i $$
+$$ f(x)=\sum_{i=1}^d max_{S\in\{ {1,2 } \}} sx_i \leq d max|x_i|$$
+$$ g(x)=\max_{S\in\{ {1,2 } \}}\sum_{i=1}^d sx_i \leq max d|x_i|\leq dmax|x_i|$$
+$$ g(x) \leq f(x)$$
+
+### c题
+
