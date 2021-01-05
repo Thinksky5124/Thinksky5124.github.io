@@ -635,7 +635,7 @@ aside:
       link: https://github.com/Thinksky5124
   card_announcement:
     enable: true
-    content: 初次使用Blog <img src="https://cdn.jsdelivr.net/gh/lete114/CDN/Use/my_bg.gif">
+    content: 不定期更新Blog主要研究图像方面的人工智能，目前在学习目标检测 <img src="https://cdn.jsdelivr.net/gh/lete114/CDN/Use/my_bg.gif">
   card_recent_post:
     enable: true
     limit: 5 # if set 0 will show all
