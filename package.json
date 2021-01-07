@@ -12,7 +12,10 @@
     "version": "5.2.0"
   },
   "dependencies": {
+    "gallery": "^1.0.2",
     "hexo": "^5.0.0",
+    "hexo-asset-image": "git+https://github.com/7ym0n/hexo-asset-image.git",
+    "hexo-bilibili-bangumi": "^1.5.1",
     "hexo-deployer-git": "^2.1.0",
     "hexo-generator-archive": "^1.0.0",
     "hexo-generator-category": "^1.0.0",
@@ -25,6 +28,8 @@
     "hexo-renderer-mathjax": "^0.6.0",
     "hexo-renderer-pug": "^1.0.0",
     "hexo-renderer-stylus": "^2.0.1",
-    "hexo-server": "^2.0.0"
+    "hexo-server": "^2.0.0",
+    "hexo-theme-butterfly": "^3.5.1",
+    "mermaid": "^8.8.4"
   }
 }

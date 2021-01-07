@@ -4,9 +4,9 @@
 
 # Site
 title: Thyssen Wen's Blog
-subtitle: ''
-description: 'Thussen Wen的个人博客'
-keywords:
+subtitle: 
+description: '既然选择远方，就要风雨兼程'
+keywords: '既然选择远方，就要风雨兼程'
 author: Thyssen Wen
 language: zh-CN
 timezone: ''
@@ -109,3 +109,12 @@ deploy:
   type: git
   repo: https://github.com/Thinksky5124/Thinksky5124.github.io.git
   branch: master
+
+# 追番设置
+bangumi:
+  enable: true 
+  vmid: '11011224'
+  title: '追番列表'
+  quote: '生命不息，追番不止！'
+  show: 1
+  loading: '/img/Wallpaper.jpg'
