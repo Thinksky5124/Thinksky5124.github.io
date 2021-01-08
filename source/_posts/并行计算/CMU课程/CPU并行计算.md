@@ -11,8 +11,8 @@ description: 个人学习CMU并行计算课程时的笔记、总结等
 keywords: 并行计算 CMU课程
 cover: /img/cover_one.png
 top_img:
-mathjax: true
-katex:
+mathjax: 
+katex: true
 aside:
 aplayer:
 highlight_shrink:

@@ -12,6 +12,7 @@
     "version": "5.2.0"
   },
   "dependencies": {
+    "@upupming/hexo-renderer-markdown-it-plus": "^2.0.2",
     "gallery": "^1.0.2",
     "hexo": "^5.0.0",
     "hexo-asset-image": "git+https://github.com/7ym0n/hexo-asset-image.git",
@@ -31,5 +32,8 @@
     "hexo-server": "^2.0.0",
     "hexo-theme-butterfly": "^3.5.1",
     "mermaid": "^8.8.4"
+  },
+  "devDependencies": {
+    "gulp-imagemin": "^7.1.0"
   }
 }

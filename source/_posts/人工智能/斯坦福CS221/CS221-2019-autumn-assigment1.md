@@ -12,8 +12,8 @@ description:
 keywords: 斯坦福CS221人工智能基础课
 cover: /img/Artificial_intelligence.jpg
 top_img:
-mathjax: true
-katex:
+mathjax: 
+katex: true
 aside:
 aplayer:
 highlight_shrink:

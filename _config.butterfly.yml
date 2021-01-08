@@ -79,14 +79,16 @@ local_search:
 
 # MathJax
 mathjax:
-  enable: true
+  enable: false
   per_page: false
 
 # KaTeX
 katex:
-  enable: false
+  enable: true
   per_page: false
   hide_scrollbar: true
+  options:
+        strict: false
 
 # Image (圖片設置)
 # --------------------------------------
@@ -405,7 +407,7 @@ footer:
   background-position: bottom
   background-size: cover
   ICP: # Chinese ICP License
-    enable: false
+    enable: true
     url:
     text:
     icon: /img/icp.png
@@ -506,7 +508,7 @@ tag_ui: # 留空或 index
 # Website Background (設置網站背景)
 # can set it to color or image (可設置圖片 或者 顔色)
 # The formal of image: url(http://xxxxxx.com/xxx.jpg)
-background: /img/Wallpaper.jpg
+background: url(https://original.img.pixivic.net/img-original/img/2021/01/04/00/00/01/86800103_p0.png)
 
 # Footer Background
 footer_bg: false
@@ -548,7 +550,7 @@ canvas_nest:
 # Typewriter Effect (打字效果)
 # https://github.com/disjukr/activate-power-mode
 activate_power_mode:
-  enable: false
+  enable: true
   colorful: true # open particle animation (冒光特效)
   shake: true #  open shake (抖動特效)
   mobile: false

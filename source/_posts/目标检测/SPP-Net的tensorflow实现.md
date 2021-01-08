@@ -12,8 +12,8 @@ description:
 keywords: 目标检测金字塔网络
 cover: /img/SPP.png
 top_img:
-mathjax: true
-katex:
+mathjax: 
+katex: true
 aside:
 aplayer:
 highlight_shrink:
