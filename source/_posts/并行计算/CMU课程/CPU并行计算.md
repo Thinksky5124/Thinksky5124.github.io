@@ -23,9 +23,9 @@ categories:
 - 理解并行计算的形式
 - 理解延迟(latency)和带宽(bandwidth)
 
-## parallel execution
+## Parallel Execution
 
-### 单线程执行
+### 单线程执行 - 编译器定义
 例程:使用泰勒公式计算$sin(x)$。
 ```C++
 void sinx(int N,int terms, float* x,float* result){
@@ -55,7 +55,7 @@ void sinx(int N,int terms, float* x,float* result){
 - ALU模块负责执行
 - 上下文存储器(Exceution Context)负责存储执行数据
 
-### 多线程执行
+### 多线程执行 - 用户定义
 
 概念：指令级并行 instruction level parallelism (ILP)
 
@@ -107,7 +107,7 @@ void sinx(int N,int terms, float* x,float* result){
 ```
 上述例程表示线程级并行的代码描述，通过将整个工作分散分配到不同的处理器核中，以获得加速的效果。工作的分配方式将很大程度上影响加速的效果。
 
-### 数据并行
+### 数据并行 - 用户定义、编译器定义
 {% gallery %}
 ![SMID](./CPU并行计算/SMID.jpg)
 {% endgallery %}
@@ -166,3 +166,49 @@ void sinx(int N, int terms, float* x, float* result)
     }
 }
 ```
+
+### 条件执行
+
+假设数据并行处理器需要执行如下代码
+```c++
+float x = A[i];
+if(x>0){
+    float tmp = exp(x,5.f);
+    x = tmp + kMyConst2;
+}else{
+    float tmp = kMyConst1;
+    x = 2.f * tmp;
+}
+result[i] = x;
+```
+在处理器进行分支预测之后，处理器会首先并行执行值未真的那些ALU，再之后执行那些值为假的ALU，以达到并行处理的效果。
+{% gallery %}
+![在数据并行时进行条件执行](./CPU并行计算/SIMD_Condition.png)
+{% endgallery %}
+
+### SMID的有关概念
+- 要使用并行处理需要程序手动进行特定编码，比如使用：SSE、AVX等代码。
+- 但是一旦使用并行处理，编译器无法检查与保证循环的独立性，需要自行保证
+- GPU的数据并行处理性能要高于CPU的数据并行处理性能
+
+比如：
+{% gallery %}
+![CPU与GPU的SMID能力对比](./CPU并行计算/Processor_Compare.png)
+{% endgallery %}
+
+## Accessing Memory
+
+### 术语
+- 内存延时：内存延迟是指等待对系统内存中存储数据的访问完成时引起的延期。 单位：100机器周期、100毫秒
+- 内存带宽：内存系统可以提供给处理器数据的速度。 单位：20GB/s
+- 吞吐量(throughput):芯片单位时间处理数据的多少
+
+现代处理器中不可避免因为内存延时而降低CPU处理速率，但是可以通过一些办法来“隐藏”内存延时，比如：
+- 多级缓存
+- 预储存
+- 多线程技术
+- 存储执行上下文
+
+{% gallery %}
+![CPU与GPU的内存结构对比](./CPU并行计算/CPUvsGPU.png)
+{% endgallery %}
