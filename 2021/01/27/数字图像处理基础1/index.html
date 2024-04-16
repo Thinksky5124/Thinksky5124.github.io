@@ -1,0 +1,314 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>数字图像处理基础（一） | Thyssen Wen's Blog</title><meta name="author" content="Thyssen Wen"><meta name="copyright" content="Thyssen Wen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="数字图像的基础运算和常用概念和定义等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数字图像处理基础（一）">
+<meta property="og:url" content="https://thinksky5124.github.io/2021/01/27/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%9F%BA%E7%A1%801/index.html">
+<meta property="og:site_name" content="Thyssen Wen&#39;s Blog">
+<meta property="og:description" content="数字图像的基础运算和常用概念和定义等。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/03/25/6yXGKnZYaMCQRoz.jpg">
+<meta property="article:published_time" content="2021-01-27T02:51:00.000Z">
+<meta property="article:modified_time" content="2024-04-16T08:57:05.647Z">
+<meta property="article:author" content="Thyssen Wen">
+<meta property="article:tag" content="数字图像处理">
+<meta property="article:tag" content="图像处理基本概念">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/03/25/6yXGKnZYaMCQRoz.jpg"><link rel="shortcut icon" href="https://avatars.githubusercontent.com/u/40914433?v=4"><link rel="canonical" href="https://thinksky5124.github.io/2021/01/27/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%9F%BA%E7%A1%801/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '数字图像处理基础（一）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-04-16 16:57:05'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Thyssen Wen's Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://avatars.githubusercontent.com/u/40914433?v=4" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">17</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.dlut.edu.cn/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/03/25/6yXGKnZYaMCQRoz.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Thyssen Wen's Blog"><span class="site-name">Thyssen Wen's Blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.dlut.edu.cn/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">数字图像处理基础（一）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-01-27T02:51:00.000Z" title="发表于 2021-01-27 10:51:00">2021-01-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-04-16T08:57:05.647Z" title="更新于 2024-04-16 16:57:05">2024-04-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">数字图像处理</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/%E5%9B%BE%E5%83%8F%E5%9F%BA%E7%A1%80/">图像基础</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="数字图像处理基础（一）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>本系列是参考<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%EF%BC%88%E7%AC%AC%E4%B8%89%E7%89%88%EF%BC%89">冈萨雷斯《数字图像处理》</a>与<a target="_blank" rel="noopener" href="http://vision.stanford.edu/teaching/cs131_fall2021/index.html">斯坦福CS131课程</a>进行自我总结而成的数字图像处理基础知识。</p>
+<h1 id="数字图像表示"><a href="#数字图像表示" class="headerlink" title="数字图像表示"></a>数字图像表示</h1><h2 id="数学形式定义"><a href="#数学形式定义" class="headerlink" title="数学形式定义"></a>数学形式定义</h2><p>令$f(s,t)$表示连续图像函数，通过采样和量化可以将这幅连续图像转化成数字图像$f(x,y)$，该图像有$M$行$N$列，其中$f(x,y)$是离散坐标，函数$f(x,y)$的值表示灰度值。</p>
+<p>计算集为了方便存储和处理通常将图像表示成矩阵形式，形式如下<br>$$ A=\left[<br> \begin{matrix}<br>   a_{0,0} &amp; a_{0,1} &amp; \cdots &amp; a_{0,N-1} \<br>   a_{1,0} &amp; a_{1,1} &amp; \cdots &amp; a_{1,N-1} \<br>   \vdots &amp; \vdots &amp; \ddots &amp; \vdots \<br>   a_{M-1,0} &amp; a_{M-1,1} &amp; \cdots &amp; a_{M-1,N-1}<br>  \end{matrix}<br>  \right] \tag{1}<br>$$</p>
+<p>许多图像显示器都是从左上角开始向右移动，每次扫描一行。习惯上将左上角作为矩阵的第一个元，这也符合笛卡尔坐标系。</p>
+<p>$f(x,y)$函数的值$L$离散化后，通常称为灰度级数，一般取2的整数倍<br>$$ L=2^{k} \tag{2}$$<br>$L$的取值在$[0,L-1]$区间内，这个区域称作动态范围。</p>
+<p>一幅数字图像存储所需要的比特数$b$可以表示为</p>
+<p>$$b=MNk \tag{3} $$</p>
+<h2 id="饱和度、噪声与对比度"><a href="#饱和度、噪声与对比度" class="headerlink" title="饱和度、噪声与对比度"></a>饱和度、噪声与对比度</h2><h3 id="饱和度"><a href="#饱和度" class="headerlink" title="饱和度"></a>饱和度</h3><p>饱和度是指一个最大值，超过该值的所有灰度值都会被裁掉，图像显示则显示显示器所能显示的最大亮度</p>
+<h3 id="噪声"><a href="#噪声" class="headerlink" title="噪声"></a>噪声</h3><p>图像噪声是指存在于图像数据中的不必要的或多余的干扰信息。</p>
+<p><img src="https://s2.loli.net/2024/03/25/ye1LdGtQJ6goUI8.jpg" alt="图像噪声.jpg"></p>
+<h4 id="对比度与反差比"><a href="#对比度与反差比" class="headerlink" title="对比度与反差比"></a>对比度与反差比</h4><p>对比度是指图像中最高和最低灰度级间的灰度差，反差比则是它们之间的比率</p>
+<h2 id="空间分辨率和灰度分辨率"><a href="#空间分辨率和灰度分辨率" class="headerlink" title="空间分辨率和灰度分辨率"></a>空间分辨率和灰度分辨率</h2><h3 id="空间分辨率"><a href="#空间分辨率" class="headerlink" title="空间分辨率"></a>空间分辨率</h3><p>空间分辨率的单位是点数$dpi$，越大说明图像显示的原本信息更细腻</p>
+<h3 id="灰度分辨率"><a href="#灰度分辨率" class="headerlink" title="灰度分辨率"></a>灰度分辨率</h3><p>灰度分辨率是指灰度级中可分辨的最小变化，一般采用8比特，也有使用16、32比特，但是不常见。注：在16级灰度或者跟小的灰度等级中，会出现伪轮廓，类似地图中的等高线。</p>
+<h1 id="图像内插"><a href="#图像内插" class="headerlink" title="图像内插"></a>图像内插</h1><p>内插通常在图像放大、缩小、旋转和几何校正等任务中使用。内插在放大缩小中使用重采样的方法，内插是用已知数据来估计未知位置的值的过程。</p>
+<h2 id="最邻近插值法"><a href="#最邻近插值法" class="headerlink" title="最邻近插值法"></a>最邻近插值法</h2><p>将原图像中最邻近的灰度赋给每一个新位置。将目标图像中的点，对应到原图像中后，找到最相邻的整数坐标点的像素值，作为该点的像素值输出。</p>
+<p><img src="https://s2.loli.net/2024/03/25/kOa5gEhS6QPCGWB.jpg" alt="最邻近插值法.jpg"></p>
+<p>这种方法虽然简单，但是容易失真。</p>
+<h2 id="双线性内插"><a href="#双线性内插" class="headerlink" title="双线性内插"></a>双线性内插</h2><p>双线性内插使用4个最近的灰度来计算给定位置的灰度。令$(x,y)$表示待赋值的灰度值的位置，$v(x,y)$表示灰度值，公式如下：</p>
+<p>$$ v(x,y) = ax+by +cxy + d \tag{4}$$</p>
+<p>4个系数可有点$(x,y)$的四个最近的点写出四个未知方程求出。</p>
+<h2 id="双三次内插"><a href="#双三次内插" class="headerlink" title="双三次内插"></a>双三次内插</h2><p>双线性内插使用16个最近的灰度来计算给定位置的灰度。令$(x,y)$表示待赋值的灰度值的位置，$v(x,y)$表示灰度值，公式如下：</p>
+<p>$$ v(x,y) = \sum_{i=0}^{3}\sum_{j=0}^{3}a_{ij}x^iy^j \tag{5}$$</p>
+<p>16个系数可有点$(x,y)$的16个最近的点写出16个未知方程求出。它是Adobe商业公司使用的标准内插法。</p>
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p>图像的精细程度：双三次内插法&gt;双线性内插&gt;最邻近插值法</p>
+<h1 id="像素的基本关系"><a href="#像素的基本关系" class="headerlink" title="像素的基本关系"></a>像素的基本关系</h1><p>参考：<br>作者：Lemon雷<br>链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2aef925ed39e">https://www.jianshu.com/p/2aef925ed39e</a><br>来源：简书</p>
+<h2 id="相邻的定义"><a href="#相邻的定义" class="headerlink" title="相邻的定义"></a>相邻的定义</h2><p>两个像素连通的两个条件是：</p>
+<ol>
+<li><p>两个像素的位置是否相邻</p>
+</li>
+<li><p>两个像素的灰度值是否满足特定的相似性准则（同时满足某种条件，比如在某个集合内或者相等）</p>
+</li>
+</ol>
+<p>我们令V是用于定义连通性的灰度值集合。比如V={x|0&lt;x&lt;125} (x是指像素点的灰度值)。那么：</p>
+<h3 id="4连通"><a href="#4连通" class="headerlink" title="4连通"></a>4连通</h3><p>对于灰度值在V集合中的像素p和q，如果q在p的4邻域中（即N4(p)），那么称像素p和q是4连通的</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4158488-0aaf776971c469e2.png" alt="4连通示意图"></p>
+<h3 id="8连通"><a href="#8连通" class="headerlink" title="8连通"></a>8连通</h3><p>对于灰度值在V集合中的像素p和q，如果q在p的8邻域中（即N8(p)），那么称像素p和q是8连通的</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4158488-d475cf2b8c170276.png" alt="8连通示意图"></p>
+<h3 id="m连通（混合连通）"><a href="#m连通（混合连通）" class="headerlink" title="m连通（混合连通）"></a>m连通（混合连通）</h3><p>对于灰度值在V集合中的像素p和q，如果：</p>
+<ol>
+<li><p>q在p的4邻域中，或者</p>
+</li>
+<li><p>q在p的D邻域中，并且p的4邻域与q的4邻域的交集是空的（即没有灰度值在V集合中的像素点）</p>
+</li>
+</ol>
+<p>那么称这两个像素是是m连通的，即4连通和D连通的混合连通。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4158488-842e7913041974b0.png" alt="m连通示意图"></p>
+<p>注：m连通（混合连通）是8连通的改进版，这个概念的提出就是为了消除8连通的二义性</p>
+<h2 id="距离测度"><a href="#距离测度" class="headerlink" title="距离测度"></a>距离测度</h2><h3 id="欧几里得距离"><a href="#欧几里得距离" class="headerlink" title="欧几里得距离"></a>欧几里得距离</h3><p>$$ D_{e}^{(p,q)} = [ (x-u)^2 + (y-v)^2 ]^{\frac{1}{2}} $$</p>
+<h3 id="D4距离"><a href="#D4距离" class="headerlink" title="D4距离"></a>D4距离</h3><p>$$ D_{4}^{(p,q)} = |x-u|+|y-v| $$</p>
+<h3 id="D8距离"><a href="#D8距离" class="headerlink" title="D8距离"></a>D8距离</h3><p>$$ D_{8}^{(p,q)} = max(|x-u|,|y-v|) $$</p>
+<h1 id="加性图像降噪的数学原理"><a href="#加性图像降噪的数学原理" class="headerlink" title="加性图像降噪的数学原理"></a>加性图像降噪的数学原理</h1><p>假设图像 $f(x,y)$ 是被加性噪声$\eta(x,y)$污染后的图像，也即<br>$$ g(x,y)= f(x,y) + \eta(x,y) \tag{6}$$<br>其中$\eta(x,y)$噪声在每个坐标上是不相关的，并且均值为0。</p>
+<p>若图像噪声满足上述关系，可以证明对$K$幅图像进行平均得到：<br>$$ \bar{g}(x,y) = \frac{1}{K} \sum_{i=1}^K g_i(x,y) \tag{7}$$<br>$$ E{\bar{g}(x,y)} = f(x,y) \tag{8}$$<br>$$ \sigma_{\bar{g}(x,y)}^2 = \frac{1}{K} \sigma_{\eta(x,y)}^2 \tag{9}$$</p>
+<p>可知当$K$逐渐变大时，图像的噪声水平越低。</p>
+<p>下面为加入了高斯白噪声的图片</p>
+<p><img src="http://accu.cc/img/pil/agwn/jp_agwn.jpg" alt="噪声图片"></p>
+<p>使用如上原理去除噪声后</p>
+<p><img src="http://accu.cc/img/pil/agwn/jp_denoise.jpg" alt="除噪后图片"></p>
+<p>图片来源：<a target="_blank" rel="noopener" href="http://accu.cc/content/pil/agwn/">http://accu.cc/content/pil/agwn/</a></p>
+<h1 id="比较图像"><a href="#比较图像" class="headerlink" title="比较图像"></a>比较图像</h1><h2 id="相减方法"><a href="#相减方法" class="headerlink" title="相减方法"></a>相减方法</h2><p>$$ g(x,y) = f(x,y) - h(x,y) \tag{10}$$<br>f(x,y)为模板图像，h(x,y)为摄影图像</p>
+<h2 id="阴影校正"><a href="#阴影校正" class="headerlink" title="阴影校正"></a>阴影校正</h2><p>假设g(x,y)为采样得到的图像，f(x,y)为理想图像，h(x,y)为阴影<br>$$ g(x,y) = f(x,y) h(x,y) \tag{11}$$<br>通过乘以h(x,y)的反函数，即可获得理想图像。</p>
+<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>可以用来校正阴影和获得ROI。</p>
+<h2 id="运算公式"><a href="#运算公式" class="headerlink" title="运算公式"></a>运算公式</h2><p>$$ g_m = g - min(g) \tag{12}$$<br>$$ g_s = K [ g_m / max(g_m) ] \tag{13}$$</p>
+<h2 id="几何运算"><a href="#几何运算" class="headerlink" title="几何运算"></a>几何运算</h2><p>仿射变换可以完成图像的缩放、旋转、平移或剪切变换<br>$$<br> \left[<br> \begin{matrix}<br>   x’ \<br>   y’ \<br>   1<br>  \end{matrix}<br>  \right]=T\left[<br> \begin{matrix}<br>   x \<br>   y \<br>   1<br>  \end{matrix}<br>  \right]=<br>  \left[<br> \begin{matrix}<br>   a_{1,1} &amp; a_{1,2} &amp; a_{1,3}  \<br>   a_{2,1} &amp; a_{2,2} &amp; a_{2,3}  \<br>   0 &amp; 0 &amp; 1<br>  \end{matrix}<br>  \right]\left[<br> \begin{matrix}<br>   x \<br>   y \<br>   1<br>  \end{matrix}<br>  \right]<br>   \tag{14}<br>$$</p>
+<h3 id="典型的仿射变换矩阵"><a href="#典型的仿射变换矩阵" class="headerlink" title="典型的仿射变换矩阵"></a>典型的仿射变换矩阵</h3><p>变换名称|仿射矩阵$T$|<br>—|:–:|—:<br>恒等|$\left[\begin{matrix}1 &amp; 0 &amp; 0  \0 &amp; 1 &amp; 0  \0 &amp; 0 &amp; 1\end{matrix}\right]$ |<br>缩入\反射|$\left[\begin{matrix}c_x &amp; 0 &amp; 0  \0 &amp; c_y &amp; 0  \0 &amp; 0 &amp; 1\end{matrix}\right]$ |<br>关于原点旋转|$\left[\begin{matrix}cos\theta &amp; -sin\theta &amp; 0  \sin\theta &amp; cos\theta &amp; 0  \0 &amp; 0 &amp; 1\end{matrix}\right]$ |<br>平移|$\left[\begin{matrix}1 &amp; 0 &amp; t_x  \0 &amp; 1 &amp; t_y  \0 &amp; 0 &amp; 1\end{matrix}\right]$ |<br>垂直剪切|$\left[\begin{matrix}1 &amp; s_v &amp; 0  \0 &amp; 1 &amp; 0  \0 &amp; 0 &amp; 1\end{matrix}\right]$ |<br>水平剪切|$\left[\begin{matrix}1 &amp; 0 &amp; 0  \s_h &amp; 1 &amp; 0  \0 &amp; 0 &amp; 1\end{matrix}\right]$ |</p>
+<p>注意使用区分：前向映射和后向映射</p>
+<p><img src="https://img-blog.csdn.net/20150404170230472" alt="前向映射"></p>
+<p><img src="https://img-blog.csdn.net/20150404172327459" alt="后向映射"></p>
+<h1 id="色彩空间"><a href="#色彩空间" class="headerlink" title="色彩空间"></a>色彩空间</h1><p>参考：百度百科、维基百科</p>
+<p>色彩是人的眼睛对于不同频率的光线的不同感受，色彩既是客观存在的（不同频率的光）又是主观感知的，有认识差异。所以人类对于色彩的认识经历了极为漫长的过程，直到近代才逐步完善起来，但至今，人类仍不能说对色彩完全了解并准确表述了，许多概念不是那么容易理解。“色彩空间”一词源于西方的“Color Space”，又称作“色域”，色彩学中，人们建立了多种色彩模型，以一维、二维、三维甚至四维空间坐标来表示某一色彩，这种坐标系统所能定义的色彩范围即色彩空间。我们经常用到的色彩空间主要有RGB、CMYK、Lab等。</p>
+<h2 id="CIE-1931色彩空间"><a href="#CIE-1931色彩空间" class="headerlink" title="CIE 1931色彩空间"></a>CIE 1931色彩空间</h2><p>在CIE XYZ色彩空间中，三色刺激值并不是指人类眼睛对短、中和长波（S、M和L）的反应，而是一组称为X、Y和Z的值，约略对应于红色、绿色和蓝色（但要留意X、Y和Z值并不是真的看起来是红、绿和蓝色，而是从红色、绿色和蓝色导出来的参数），并使用CIE 1931 XYZ颜色匹配函数来计算。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-34b10192f00ee84add06ee0c74148d97_1440w.jpg" alt="CIE XYZ"></p>
+<p>$$ X(Red)+Y(Green)+Z(Blue)=1 \tag{15}$$<br>知道其中两个值就可以根据[公式15]推算另外第三个值，所以色彩空间可以用二维坐标表示，上图圈起来的范围是人类肉眼可见的颜色范围。</p>
+<h2 id="非线性色彩空间HSV"><a href="#非线性色彩空间HSV" class="headerlink" title="非线性色彩空间HSV"></a>非线性色彩空间HSV</h2><p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43269204/article/details/94628987">https://blog.csdn.net/weixin_43269204/article/details/94628987</a></p>
+<p>HSV（Hue，Saturation，Value）是根据颜色的直观特性由A. R. Smith在1978年创建的一种颜色空间, 也称六角锥体模型，HSV即色相H（Hue）、饱和度S（Saturation）、明度V（Value）。色相是色彩的基本属性，就是平常说的颜色的名称，如红色、黄色等，H由绕V轴的旋转角给定，红色对应于角度0°，绿色对应于角度120°，蓝色对应于角度240°，每一种颜色和它的补色相差180°；饱和度（S）是指色彩的纯度，越高色彩越纯，低则逐渐变灰；明度（V），颜色明亮的程度，明度值与发光体的光亮度有关。圆锥的顶点处，V=0，代表黑色，圆锥的顶面中心处V=1，S=0，代表白色，其空间模型如图所示。</p>
+<p><img src="https://img-blog.csdnimg.cn/20190704164221409.png" alt="HSV"></p>
+<h2 id="RBG颜色空间"><a href="#RBG颜色空间" class="headerlink" title="RBG颜色空间"></a>RBG颜色空间</h2><p>RGB颜色空间以R(Red:红)、G(Green:绿)、B(Blue:蓝)三种基本色为基础，进行不同程度的叠加，产生丰富而广泛的颜色，所以俗称三基色模式。在大自然中有无穷多种不同的颜色，而人眼只能分辨有限种不同的颜色，RGB模式可表示一千六百多万种不同的颜色，在人眼看来它非常接近大自然的颜色，故又称为自然色彩模式。红绿蓝代表可见光谱中的三种基本颜色或称为三原色，每一种颜色按其亮度的不同分为256个等级。当色光三原色重叠时，由于不同的混色比例能产生各种中间色。</p>
+<p><img src="https://img-blog.csdnimg.cn/20190704164624824.png" alt="RGB"></p>
+<h1 id="白平衡"><a href="#白平衡" class="headerlink" title="白平衡"></a>白平衡</h1><p>白平衡是对感器接收的图像数据进行调整，以正确的渲染处理中性色（白色，灰色等）。此调整由数码相机自动执行（自定义设置为不同的光）；胶片相机提供多种不同的滤镜和胶片类型，为不同的拍摄条件。</p>
+<p><img src="https://th.bing.com/th/id/R1b55b5e64bd5cb55098a72dbdeb6b8fd?rik=84LAoCaWj8FdAw&amp;riu=http://img.fotomen.cn/2011/11/white-balance07.jpg" alt="白平衡"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://thinksky5124.github.io">Thyssen Wen</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://thinksky5124.github.io/2021/01/27/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%9F%BA%E7%A1%801/">https://thinksky5124.github.io/2021/01/27/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%9F%BA%E7%A1%801/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://thinksky5124.github.io" target="_blank">Thyssen Wen's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">数字图像处理</a><a class="post-meta__tags" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">图像处理基本概念</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/03/25/6yXGKnZYaMCQRoz.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/01/28/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%9F%BA%E7%A1%802/" title="数字图像处理基础（二）"><img class="cover" src="https://s2.loli.net/2024/03/25/6yXGKnZYaMCQRoz.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">数字图像处理基础（二）</div></div></a></div><div class="next-post pull-right"><a href="/2021/01/12/Faster-RCNN%E7%9A%84pytorch%E5%AE%9E%E7%8E%B0/" title="Faster-RCNN的pytorch实现"><img class="cover" src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Faster-RCNN的pytorch实现</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/01/28/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%9F%BA%E7%A1%802/" title="数字图像处理基础（二）"><img class="cover" src="https://s2.loli.net/2024/03/25/6yXGKnZYaMCQRoz.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-28</div><div class="title">数字图像处理基础（二）</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://avatars.githubusercontent.com/u/40914433?v=4" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Thyssen Wen</div><div class="author-info__description">既然选择远方，就要风雨兼程</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">17</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Thinksky5124"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">不定期更新Blog，主要研究图像方面的人工智能，人工智能硬件等</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E8%A1%A8%E7%A4%BA"><span class="toc-number">1.</span> <span class="toc-text">数字图像表示</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E5%BD%A2%E5%BC%8F%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.</span> <span class="toc-text">数学形式定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A5%B1%E5%92%8C%E5%BA%A6%E3%80%81%E5%99%AA%E5%A3%B0%E4%B8%8E%E5%AF%B9%E6%AF%94%E5%BA%A6"><span class="toc-number">1.2.</span> <span class="toc-text">饱和度、噪声与对比度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A5%B1%E5%92%8C%E5%BA%A6"><span class="toc-number">1.2.1.</span> <span class="toc-text">饱和度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%99%AA%E5%A3%B0"><span class="toc-number">1.2.2.</span> <span class="toc-text">噪声</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E6%AF%94%E5%BA%A6%E4%B8%8E%E5%8F%8D%E5%B7%AE%E6%AF%94"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">对比度与反差比</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A9%BA%E9%97%B4%E5%88%86%E8%BE%A8%E7%8E%87%E5%92%8C%E7%81%B0%E5%BA%A6%E5%88%86%E8%BE%A8%E7%8E%87"><span class="toc-number">1.3.</span> <span class="toc-text">空间分辨率和灰度分辨率</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A9%BA%E9%97%B4%E5%88%86%E8%BE%A8%E7%8E%87"><span class="toc-number">1.3.1.</span> <span class="toc-text">空间分辨率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%81%B0%E5%BA%A6%E5%88%86%E8%BE%A8%E7%8E%87"><span class="toc-number">1.3.2.</span> <span class="toc-text">灰度分辨率</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E5%86%85%E6%8F%92"><span class="toc-number">2.</span> <span class="toc-text">图像内插</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E9%82%BB%E8%BF%91%E6%8F%92%E5%80%BC%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">最邻近插值法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E7%BA%BF%E6%80%A7%E5%86%85%E6%8F%92"><span class="toc-number">2.2.</span> <span class="toc-text">双线性内插</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E4%B8%89%E6%AC%A1%E5%86%85%E6%8F%92"><span class="toc-number">2.3.</span> <span class="toc-text">双三次内插</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%BA%E5%88%AB"><span class="toc-number">2.4.</span> <span class="toc-text">区别</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%83%8F%E7%B4%A0%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%85%B3%E7%B3%BB"><span class="toc-number">3.</span> <span class="toc-text">像素的基本关系</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E9%82%BB%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">3.1.</span> <span class="toc-text">相邻的定义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E8%BF%9E%E9%80%9A"><span class="toc-number">3.1.1.</span> <span class="toc-text">4连通</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8%E8%BF%9E%E9%80%9A"><span class="toc-number">3.1.2.</span> <span class="toc-text">8连通</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#m%E8%BF%9E%E9%80%9A%EF%BC%88%E6%B7%B7%E5%90%88%E8%BF%9E%E9%80%9A%EF%BC%89"><span class="toc-number">3.1.3.</span> <span class="toc-text">m连通（混合连通）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%9D%E7%A6%BB%E6%B5%8B%E5%BA%A6"><span class="toc-number">3.2.</span> <span class="toc-text">距离测度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E8%B7%9D%E7%A6%BB"><span class="toc-number">3.2.1.</span> <span class="toc-text">欧几里得距离</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#D4%E8%B7%9D%E7%A6%BB"><span class="toc-number">3.2.2.</span> <span class="toc-text">D4距离</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#D8%E8%B7%9D%E7%A6%BB"><span class="toc-number">3.2.3.</span> <span class="toc-text">D8距离</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8A%A0%E6%80%A7%E5%9B%BE%E5%83%8F%E9%99%8D%E5%99%AA%E7%9A%84%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">加性图像降噪的数学原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%AF%94%E8%BE%83%E5%9B%BE%E5%83%8F"><span class="toc-number">5.</span> <span class="toc-text">比较图像</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%87%8F%E6%96%B9%E6%B3%95"><span class="toc-number">5.1.</span> <span class="toc-text">相减方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B4%E5%BD%B1%E6%A0%A1%E6%AD%A3"><span class="toc-number">5.2.</span> <span class="toc-text">阴影校正</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8"><span class="toc-number">5.3.</span> <span class="toc-text">作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E5%85%AC%E5%BC%8F"><span class="toc-number">5.4.</span> <span class="toc-text">运算公式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%A0%E4%BD%95%E8%BF%90%E7%AE%97"><span class="toc-number">5.5.</span> <span class="toc-text">几何运算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BB%BF%E5%B0%84%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5"><span class="toc-number">5.5.1.</span> <span class="toc-text">典型的仿射变换矩阵</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4"><span class="toc-number">6.</span> <span class="toc-text">色彩空间</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CIE-1931%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4"><span class="toc-number">6.1.</span> <span class="toc-text">CIE 1931色彩空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%9E%E7%BA%BF%E6%80%A7%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4HSV"><span class="toc-number">6.2.</span> <span class="toc-text">非线性色彩空间HSV</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RBG%E9%A2%9C%E8%89%B2%E7%A9%BA%E9%97%B4"><span class="toc-number">6.3.</span> <span class="toc-text">RBG颜色空间</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%99%BD%E5%B9%B3%E8%A1%A1"><span class="toc-number">7.</span> <span class="toc-text">白平衡</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/04/16/hello-world/" title="Hello World"><img src="https://s2.loli.net/2024/03/25/TXt51eJvamH9bjP.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2024/04/16/hello-world/" title="Hello World">Hello World</a><time datetime="2024-04-16T08:57:05.647Z" title="发表于 2024-04-16 16:57:05">2024-04-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/25/TensorRT_deploy_and_infer/" title="TensorRT 模型构建与推理"><img src="https://s2.loli.net/2024/03/25/TXt51eJvamH9bjP.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="TensorRT 模型构建与推理"/></a><div class="content"><a class="title" href="/2024/03/25/TensorRT_deploy_and_infer/" title="TensorRT 模型构建与推理">TensorRT 模型构建与推理</a><time datetime="2024-03-25T03:17:41.679Z" title="发表于 2024-03-25 11:17:41">2024-03-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/18/CPU_GPU%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/" title="CPU/GPU联合编程"><img src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CPU/GPU联合编程"/></a><div class="content"><a class="title" href="/2022/08/18/CPU_GPU%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/" title="CPU/GPU联合编程">CPU/GPU联合编程</a><time datetime="2022-08-18T08:00:00.000Z" title="发表于 2022-08-18 16:00:00">2022-08-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/18/CUDA%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/" title="CUDA编程模型基础"><img src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CUDA编程模型基础"/></a><div class="content"><a class="title" href="/2022/08/18/CUDA%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/" title="CUDA编程模型基础">CUDA编程模型基础</a><time datetime="2022-08-18T08:00:00.000Z" title="发表于 2022-08-18 16:00:00">2022-08-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/18/Dispatcher/" title="Dispatcher"><img src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Dispatcher"/></a><div class="content"><a class="title" href="/2022/08/18/Dispatcher/" title="Dispatcher">Dispatcher</a><time datetime="2022-08-18T08:00:00.000Z" title="发表于 2022-08-18 16:00:00">2022-08-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Thyssen Wen</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>

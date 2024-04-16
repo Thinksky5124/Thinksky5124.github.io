@@ -1,0 +1,407 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>SLAM数学基础 | Thyssen Wen's Blog</title><meta name="author" content="Thyssen Wen"><meta name="copyright" content="Thyssen Wen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="SLAM数学基础：三维空间的刚体运动和李群李代数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SLAM数学基础">
+<meta property="og:url" content="https://thinksky5124.github.io/2022/08/18/SLAM_math_fundation/index.html">
+<meta property="og:site_name" content="Thyssen Wen&#39;s Blog">
+<meta property="og:description" content="SLAM数学基础：三维空间的刚体运动和李群李代数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png">
+<meta property="article:published_time" content="2022-08-18T08:00:00.000Z">
+<meta property="article:modified_time" content="2024-04-16T08:57:05.647Z">
+<meta property="article:author" content="Thyssen Wen">
+<meta property="article:tag" content="SLAM">
+<meta property="article:tag" content="数学原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png"><link rel="shortcut icon" href="https://avatars.githubusercontent.com/u/40914433?v=4"><link rel="canonical" href="https://thinksky5124.github.io/2022/08/18/SLAM_math_fundation/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'SLAM数学基础',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-04-16 16:57:05'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Thyssen Wen's Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://avatars.githubusercontent.com/u/40914433?v=4" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">17</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.dlut.edu.cn/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Thyssen Wen's Blog"><span class="site-name">Thyssen Wen's Blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.dlut.edu.cn/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">SLAM数学基础</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-08-18T08:00:00.000Z" title="发表于 2022-08-18 16:00:00">2022-08-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-04-16T08:57:05.647Z" title="更新于 2024-04-16 16:57:05">2024-04-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/SLAM/">SLAM</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="SLAM数学基础"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="SLAM数学基础"><a href="#SLAM数学基础" class="headerlink" title="SLAM数学基础"></a>SLAM数学基础</h1><h1 id="三维空间的刚体运动"><a href="#三维空间的刚体运动" class="headerlink" title="三维空间的刚体运动"></a>三维空间的刚体运动</h1><p>刚体：刚体是指在运动中和受力作用后，形状和大小不变，而且内部各点的相对位置不变的物体。</p>
+<h2 id="旋转矩阵"><a href="#旋转矩阵" class="headerlink" title="旋转矩阵"></a>旋转矩阵</h2><p>$$ SO(n)={R \in \mathbb{R}^{n \times n}|R R^T = I, det(R)=1} $$</p>
+<p>$SO(n)$是特殊正交群，刚体在两个坐标系之间的变换可以公式化表述为</p>
+<p>$$ a’=Ra+t $$</p>
+<p>$t$表示的是从a坐标系原点到b坐标系原点的向量</p>
+<p>三维旋转矩阵的计算如下</p>
+<p>$$<br>\begin{bmatrix}<br>    e^T_1 e’_1 &amp; e^T_1 e’_2 &amp; e^T_1 e’_3\<br>    e^T_2 e’_1 &amp; e^T_2 e’_2 &amp; e^T_2 e’_3 \<br>    e^T_3 e’_1 &amp; e^T_3 e’_2 &amp; e^T_3 e’_3\<br>\end{bmatrix}<br>$$</p>
+<p>$e_i$是某一坐标系的基向量</p>
+<h2 id="齐次坐标"><a href="#齐次坐标" class="headerlink" title="齐次坐标"></a>齐次坐标</h2><p>连续变换坐标系时，使用上述的变换公式不是线性的表述，写起来会很麻烦，如</p>
+<p>$$<br>c=R_2(R_1a+t_1)+t_2<br>$$</p>
+<p>因而在三维向量的末尾加上一个1，就变为了四维向量，称为齐次坐标，变换式变为如下形式</p>
+<p>$$<br>\begin{bmatrix}a’\1\\end{bmatrix}=\begin{bmatrix}R &amp; t\o^T&amp;1\\end{bmatrix}\begin{bmatrix}a\1\\end{bmatrix}=T\begin{bmatrix}a\1\\end{bmatrix}<br>$$</p>
+<p>矩阵$T$称为变换矩阵，这样连续变换坐标系就变成了线性表示$\begin{bmatrix}c\1\\end{bmatrix}=T_2T_1\begin{bmatrix}a\1\\end{bmatrix}$</p>
+<p>反向变换为</p>
+<p>$$<br>T^{-1}=\begin{bmatrix}R^T &amp; -R^Tt\o^T&amp;1\\end{bmatrix}<br>$$</p>
+<p><strong>反对称矩阵</strong></p>
+<p>$$<br>a^{\wedge}=\begin{bmatrix}a_1 \ a_2\a_3\\end{bmatrix}^{\wedge}=\begin{bmatrix}0 &amp; -a_3 &amp; a_2 \ a_3 &amp; 0 &amp; -a_1 \ -a_2 &amp; a_1 &amp; 0\ \end{bmatrix}<br>$$</p>
+<h2 id="旋转向量和欧拉角"><a href="#旋转向量和欧拉角" class="headerlink" title="旋转向量和欧拉角"></a>旋转向量和欧拉角</h2><p>矩阵方式表达旋转至少有以下两个缺点</p>
+<ol>
+<li>$SO(3)$的旋转矩阵有9个量，但是一次旋转只有3个自由度，这种表达方式是冗余的</li>
+<li>旋转矩阵自身带有约束：它必须是个正交矩阵，而且行列式为1，这些约束会使求解变得困难</li>
+</ol>
+<h3 id="旋转向量"><a href="#旋转向量" class="headerlink" title="旋转向量"></a>旋转向量</h3><p>任意的旋转都可以用一个<strong>旋转轴</strong>和一个<strong>旋转角</strong>来刻画，我们使用一个向量，方向与旋转轴一致，长度等于旋转角，称之为旋转向量$n$。</p>
+<p>旋转向量到旋转矩阵的转换过程由罗德里格斯公式表明</p>
+<p>$$<br>R = cos\theta I + (1 - cos\theta)nn^T + sin\theta n^{\wedge}<br>$$</p>
+<p>旋转矩阵到旋转向量的转换过程有</p>
+<p>$$<br>tr(R) = cos \theta tr(I) + (1 - cos\theta)tr(nn^T) + sin\theta tr(n^-) = 3 cos\theta + (1 - cos \theta) = 1 + 2 cos\theta<br>$$</p>
+<p>$$<br>\theta=arccos \frac{tr(R) - 1}{2}<br>$$</p>
+<p>关于转轴$n$，旋转轴上的向量在旋转后不发生变化，表明</p>
+<p>$$<br>Rn=n<br>$$</p>
+<h3 id="欧拉角"><a href="#欧拉角" class="headerlink" title="欧拉角"></a>欧拉角</h3><p>以ZYX为例子，可以把任意旋转分解为一下3个轴上的转角</p>
+<ol>
+<li>偏航角yaw</li>
+<li>俯仰角pitch</li>
+<li>滚转角roll</li>
+</ol>
+<p>使用$\begin{bmatrix}r &amp; p &amp; y\end{bmatrix}^T$向量描述，但是欧拉角有一个重大的缺点就是会碰到著名的万向锁问题：在俯仰角为$\pm90^{\circ}$时，第一次旋转与第三次旋转将使用同一个轴，使得系统失去一个自由度，这被称为奇异性问题。由于这种原理欧拉角不适用于插值和迭代，往往只应用于人机交互中。</p>
+<h2 id="四元数"><a href="#四元数" class="headerlink" title="四元数"></a>四元数</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>一个四元数拥有一个实部和三个虚部：$q=q_0+q_1 i+q_2 j+q_3 k$，这三个虚部满足如下关系</p>
+<p>$$<br>\begin{cases}<br>i^2=j^2=k^2=-1 \<br>ij=k,ji=-k \ jk=i,kj=-i \ki=j, ik=-j<br>\end{cases}<br>$$</p>
+<p>$i,j,k$对应三个坐标轴，乘一次单位$i,j,k$表示旋转$180^{\circ}$</p>
+<h3 id="用四元数表示旋转"><a href="#用四元数表示旋转" class="headerlink" title="用四元数表示旋转"></a>用四元数表示旋转</h3><p>假设有一个空间三维点$q=\begin{bmatrix}x,y,z\end{bmatrix} \in R^3$，以及一个由单位四元数$q$指定的旋转，那么旋转之后的点变为$q’$公式表示为</p>
+<p>$$<br>p=\begin{bmatrix}0,x,y,z\end{bmatrix}^T = \begin{bmatrix}0, v\end{bmatrix}^T, p’=qpq^{-1}<br>$$</p>
+<h2 id="变换的种类"><a href="#变换的种类" class="headerlink" title="变换的种类"></a>变换的种类</h2><p><img src="https://s2.loli.net/2024/03/25/D3v1nbXtsxwIWBH.png" alt="change1.png"></p>
+<p><img src="https://s2.loli.net/2024/03/25/WReSs1XKxoL4a3f.png" alt="change2.png"></p>
+<h1 id="李群和李代数"><a href="#李群和李代数" class="headerlink" title="李群和李代数"></a>李群和李代数</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在SLAM中，除了表达3D旋转与位移之外，我们还要对它们进行估计，因为SLAM整个过程就是在不断地估计机器人的位姿与地图。为了做这件事，需要对变换矩阵进行插值、求导、迭代等操作。例如，在经典ICP问题中，给定了两组3D点，我们要计算它们之间的变换矩阵。假设第一组的3D点为$\mathbf{P}={ \mathbf{p}_i | i = [1,2, \ldots, N] }$，第二组3D点为$\mathbf{Q}={ \mathbf{q}_i | i = [1,2, \ldots, N] }$，那我们实际要做的事情是求一个欧氏变换$\mathbf{T}$，使得$\mathbf{T}$满足</p>
+<p>$$ \forall i, \quad \mathbf{q}_i = \mathbf{T} \mathbf{p}_i $$</p>
+<p>注意这里使用了齐次坐标表示。通常，这许多个匹配过的点是通过特征匹配得到的，构成了一个超定方程。而由于噪声的存在，这个方程往往是无解的。因此我们转而计算一个最小二乘：</p>
+<p>$$ \mathop {\min }\limits_{\mathbf{T} } u\left( {\mathbf{T} } \right) = \sum\limits_{i = 1}^N { { { \left| { {\mathbf{q}_i} - \mathbf{T} {\mathbf{p}_i} } \right| }^2 } } $$</p>
+<p>这时问题就来了：如果用迭代方式求解这个优化时（尽管可以不用迭代方式来求），如何求目标函数$u$相对于$\mathbf{T}$的导数呢？首先，$\mathbf{T}$只有6 个自由度，最好能够在一个六维空间表达它，那么$u(\mathbf{T})$相对于这个六维空间的导数（雅可比矩阵）是一个$6 \times 6$的矩阵。其次，$\mathbf{T}$对于乘法是封闭的，但对加法不封闭，即任意两个变换矩阵相加后并不是一个变换矩阵，这主要是因为旋转矩阵对加法是不封闭的。<br>出于这两个原因，我们希望有更好的数学工具帮助我们做这些事，而李群与李代数理论正好提供了这样的工具。李群与李代数广泛地用于机器人与计算机视觉领域，并在机器人动力学推导上占据重要地位。不过，由于SLAM不涉及过多的动力学推导。我们重点介绍它在SLAM中相关的几个重要的结果，而略去许多数学性质的证明。特别地，重点介绍$SO(3)$和$SE(3)$这两个李群与对应的李代数。</p>
+<h2 id="李代数基础"><a href="#李代数基础" class="headerlink" title="李代数基础"></a>李代数基础</h2><p>首先，我们来讨论较为简单的三维旋转群。为了说明它的结构，首先介绍群的概念。<br><strong>群（Group）</strong>是一种集合加上一种运算的代数结构，记作$(A,\cdot)$。其中$A$代表集合，$\cdot$是定义在该集合上的二元运算。那么，如果这个运算满足以下几个条件，则称$G=(A, \cdot)$为群。</p>
+<ul>
+<li>封闭性： $\quad \forall a_1, a_2, \quad a_1 \cdot a_2 \in A$</li>
+<li>结合律： $\quad \forall a_1, a_2, a_3, \quad (a_1 \cdot a_2) \cdot a_3 = a_1 \cdot ( a_2 \cdot a_3)$</li>
+<li>幺元： $\quad \exists a_0 \in A, \quad s.t. \quad \forall a \in A, \quad a_0 \cdot a = a \cdot a_0 = a$</li>
+<li>逆： $\quad \forall a \in A, \quad \exists a^{-1} \in A, \quad s.t. \quad a \cdot a^{-1} = a_0$</li>
+</ul>
+<p>读者可以记作“封结幺逆”（谐音凤姐咬你），并可以把一些常见的群放进去验证。例如整数的加法（幺元为0），去掉0后的有理数的乘法（幺元为1）。对于矩阵，可以找到一些常见的矩阵群，例如：</p>
+<ul>
+<li>一般线性群$GL(n)$ 指$n \times n$的可逆矩阵，它们对矩阵乘法成群。</li>
+<li>特殊正交群$SO(n)$也就是所谓的旋转矩阵群，其中$SO(2)$ 和$SO(3)$最为常见。正式的记法是：$SO(n) = { \mathbf{R} \in \mathbb{R}^{n \times n} | \mathbf{R R}^T = \mathbf{I}, det(\mathbf{R})=1 }$</li>
+<li>特殊欧氏群$SE(n)$ 也就是前面提到的$n$维欧氏变换，如$SE(2)$和$SE(3)$。这里给出$SE(3)$的记法：$SE(3)=\left{ T = \begin{bmatrix}R &amp; t\o^T&amp;1\\end{bmatrix} \in \mathbb{R}^{4 \times 4}|\mathbf{R} \in SO(3), \mathbf{t} \in \mathbb{R}^3 \right}$</li>
+</ul>
+<p>群结构保证了在群上的运算具有良好的性质，而群论则研究群的各种结构和性质。</p>
+<p><strong>李群</strong>是指具有连续性质的群。并且，一般连续群上的运算还是无限可微，乃至解析的（解析比无限可微更强，它还要求任意点邻域的泰勒展开都收敛）。这个问题在20世纪初被称为希尔伯特第五问题，并已得到了解决。而李群，则指实数空间上的连续群。常见的李群包括上边提到的$GL(n), SO(n), SE(n)$，以及其他的如酉群$U(n)$，辛群$Sp(2n)$等等。</p>
+<h2 id="三维旋转群-SO-3"><a href="#三维旋转群-SO-3" class="headerlink" title="三维旋转群$SO(3)$"></a>三维旋转群$SO(3)$</h2><p>三维旋转群$SO(3)$是特殊正交群$SO(n)$在$n=3$时的特例，它们可以用来描述三维空间的旋转，其元素都是$3 \times3$ 的正交且行列式为$+1$的矩阵。假设有这样一个矩阵$\mathbf{R}$，满足$\mathbf{R} \mathbf{R}^T＝\mathbf{I}$。现在，考虑它随时间发生变化，即从$\mathbf{R}$ 变成了$\mathbf{R}(t)$，仍有$\mathbf{R}(t) \mathbf{R}(t) ^T = \mathbf{I}$。在等式两边对时间求导，得到：</p>
+<p>$$<br>\mathbf{\dot{R} } (t) \mathbf{R} {(t)^T} + \mathbf{R} (t) \mathbf{\dot{R} } {(t)^T} = 0<br>$$</p>
+<p>于是</p>
+<p>$$<br>\mathbf{\dot{R} } (t) \mathbf{R} {(t)^T} = - \left( \mathbf{\dot{R} } (t) \mathbf{R} {(t)^T} \right)^T<br>$$</p>
+<p>可以看出$\mathbf{\dot{R} } (t) \mathbf{R} {(t)^T}$是一个反对称矩阵。注意到对于任意一个$3 \times 3$的反对称矩阵，我们记它为$\mathbf{A}$。由于$\mathbf{A}^T=-\mathbf{A}$，所以它主对角线元素必为$0$，而非对角线元素则只有三个自由度。我们可以把它对应到一个向量$\mathbf{a}=[a_1, a_2, a_3]^T$中去：</p>
+<p>$$<br>{\mathbf{a}^ \wedge } = \mathbf{A} = \begin{bmatrix}0 &amp; a_3 &amp; a_2\a_3&amp;0&amp;-a_1\-a_2&amp;a_1&amp;0 \end{bmatrix}<br>$$</p>
+<p>其中$^{\wedge}$符号表示由向量转换为矩阵，反之我们也可以用符号$^{\vee}$定义由矩阵转换为向量的方式：</p>
+<p>注意到这样定义的好处之一，是它与叉积的兼容性。我们可以直接把矩阵与任意向量的乘积$\mathbf{A} \mathbf{b}$ 写成 $\mathbf{a} \times \mathbf{b}$。读者可以自行验证这个兼容性。除此之外，这样定义的向量还有一些较好的性质，后文会提到。</p>
+<p>现在，由于$\mathbf{\dot{R} } (t) \mathbf{R} {(t)^T}$是一个反对称矩阵，我们可以找到一个三维向量$\mathbf{\phi} (t) \in \mathbb{R}^3$与之对应。于是有：</p>
+<p>$$<br>\mathbf{ \dot{R} } (t) \mathbf{R}(t)^T = \mathbf{\phi} (t) ^ {\wedge}<br>$$</p>
+<p>左右各右乘$\mathbf{R}(t)$，由于$\mathbf{R}$为正交阵，有：</p>
+<p>$$<br>\mathbf{ \dot{R} } (t)  = \mathbf{\phi} (t)^{\wedge} \mathbf{R}(t) = \begin{bmatrix}0&amp;- \phi_3&amp;\phi_2\\phi_3&amp;0&amp;-\phi_1\-\phi_2&amp;\phi_1&amp;0 	\end{bmatrix} \mathbf{R}(t)<br>$$</p>
+<p>可以看到，每对旋转矩阵求一次导数，只需左乘一个$\mathbf{\phi}$矩阵即可。由于$\mathbf{\phi}$反映了$\mathbf{R}$的导数性质，故称它在$SO(3)$的正切空间(tangent space)上。同时，将上式类比于一个关于$\mathbf{R}$的微分方程，可得：</p>
+<p>$$<br>\mathbf{R}(t) = \exp \left( \mathbf{\phi} (t) ^\wedge \right) \mathbf{R}(t_0)<br>$$</p>
+<p>由此我们可以引出两个概念。</p>
+<ol>
+<li>求$\mathbf{\phi}$的方法以及它的结构？——$\mathbf{\phi}$是对应到$SO(3)$上的李代数$\mathfrak{so}(3)$</li>
+<li>$\exp( \mathbf{\phi})$如何计算？——李群与李代数间的指数/对数映射。下面我们一一加以介绍。</li>
+</ol>
+<h2 id="李代数"><a href="#李代数" class="headerlink" title="李代数"></a>李代数</h2><p>对于$SO(3)$和$SE(3)$，李代数可定义于李群的正切空间上，描述了李群中元素局部性质，分别把它们记作小写的$\mathfrak{so}(3)$和$\mathfrak{se}(3)$。首先，给出通用的李代数的定义。</p>
+<p>李代数由一个集合$\mathbb{V}$，一个数域$\mathbb{F}$和一个二元运算$[]$组成。如果它们满足以下几条性质，称$(\mathbb{V}, \mathbb{F}, [])$ 为一个李代数，记作$\mathfrak{g}$。</p>
+<ul>
+<li>封闭性：$\forall \mathbf{X}, \mathbf{Y} \in \mathbb{V}, [\mathbf{X} \mathbf{Y}] \in \mathbb{V}$</li>
+<li>双线性：$\forall \mathbf{X,Y,Z} \in \mathbb{V}, a,b \in \mathbb{F}$，有 $[a\mathbf{X}+b\mathbf{Y}, \mathbf{Z}] = a[\mathbf{X}\mathbf{Z}] + b [ \mathbf{Y} \mathbf{Z} ] \quad [\mathbf{Z}, a \mathbf{X}+b\mathbf{Y}] = a [\mathbf{Z} \mathbf{X} ]+ b [\mathbf{ZY}]$</li>
+<li>自反性：$\forall \mathbf{X} \in \mathbb{V}, [\mathbf{X} \mathbf{X}] = \mathbf{0}$</li>
+<li>雅可比等价：$\forall \mathbf{X,Y,Z} \in \mathbb{V}, [\mathbf{X}, [\mathbf{YZ}] ] + [\mathbf{Z}, [\mathbf{YX}] ] + [\mathbf{Y}, [\mathbf{ZX}]]$</li>
+</ul>
+<p>从表面上来看，李代数所需要的性质还是挺多的。其中二元运算被称为<strong>李括号</strong>。相比于群中的较为简单的二元运算，李括号表达了两个集合元素的差异。它不要求结合律，而满足反对称性，以及元素和自己做李括号之后为零的性质。作为类比，三维向量$\mathbb{R}^3$ 上定义的叉积$\times$是一种李括号，因此$\mathfrak{g} = (\mathbb{R}^3, \mathbb{R}, \times)$构成了一个李代数。读者可以尝试将叉积的性质代入到上面四条性质中。</p>
+<h2 id="三维旋转群与对应的李代数"><a href="#三维旋转群与对应的李代数" class="headerlink" title="三维旋转群与对应的李代数"></a>三维旋转群与对应的李代数</h2><p>$SO(3)$对应的李代数是定义在$\mathbb{R}^3$上的向量，我们记作$\mathbf{\phi}$（注意这是个向量，虽然希腊字母的粗体不明显）。根据前面的推导，每个$\mathbf{\phi}$都可以生成一个反对称矩阵：</p>
+<p>$$<br>\mathbf{\Phi} = \mathbf{\phi}^{\wedge} = \begin{bmatrix} 0&amp;-\phi_3&amp;\phi_2\\phi_3&amp;0&amp;-\phi_1\-\phi_2&amp;\phi_1&amp;0	\end{bmatrix} \in \mathbb{R}^{3 \times 3}<br>$$</p>
+<p>在此定义下，两个向量$\mathbf{\phi}_1, \mathbf{\phi}_2$的李括号为：$[\mathbf{\phi}_1, \mathbf{\phi}_2] = \mathbf{ \Phi }_1 \mathbf{ \Phi }_2 - \mathbf{ \Phi }_2 \mathbf{ \Phi }_1$</p>
+<p>读者可以去验证该定义下的李括号满足上面的几条性质。由于$\mathbf{\phi}$ 与反对称矩阵关系很紧密，在不引起歧义的情况下，就说$\mathfrak{so}(3)$的元素是3维向量或者3维反对称矩阵，不加区别：$\mathfrak{so}(3) = \left{ \Phi = \mathbf{\phi^\wedge} \in \mathbb{R}^{3 \times 3} | \mathbf{\phi} \in \mathbb{R}^3 \right}$</p>
+<p>反对称矩阵有一些重要的性质，重点包括以下两条：$\mathbf{\phi} \mathbf{\phi}^T = \mathbf{\phi}^{\wedge} \mathbf{\phi}^{\wedge} + | \mathbf{\phi} |^2 \mathbf{I}_{3 \times 3}$</p>
+<ul>
+<li>当$\mathbf{\phi}$为单位向量时，进而有：$\mathbf{\phi} \mathbf{\phi}^T = \mathbf{\phi}^{\wedge} \mathbf{\phi}^{\wedge} + \mathbf{I}1$</li>
+<li>$\mathbf{\phi}^{\wedge} \mathbf{\phi}^{\wedge} \mathbf{\phi}^{\wedge} = - \mathbf{\phi}^{\wedge}$</li>
+</ul>
+<p>这两条性质读者也可以自行验证，我们在指数映射中会用到。</p>
+<p>至此，我们已清楚了$\mathfrak{so}(3)$的结构。它们是一个由三维向量组成的集合，每个向量对应到一个反对称矩阵，可以表达旋转矩阵的导数。现在来考虑$\exp ( \mathbf{\phi}^{\wedge} )$是如何计算的，为此我们引入指数映射。</p>
+<h2 id="指数映射"><a href="#指数映射" class="headerlink" title="指数映射"></a>指数映射</h2><p>首先，回忆任意矩阵的指数映射。它可以写成一个泰勒展开，但是只有在收敛的情况下才会有结果，其结果仍是一个矩阵。</p>
+<p>$$<br>\exp(\mathbf{A}) = \sum\limits_{n = 0}^\infty {\frac{1}{ { n! } }{ \mathbf{A}^n} }<br>$$</p>
+<p>同样地，对$\mathfrak{so}(3)$中任意一元素$\mathbf{\phi}$，我们亦可按此方式定义它的指数映射：</p>
+<p>$$<br>\exp(\mathbf{\phi}^\wedge) = \sum\limits_{n = 0}^\infty {\frac{1}{ {n!} }{ (\mathbf{\phi}^{\wedge})^n} }<br>$$</p>
+<p>现在我们来仔细看看它的含义。由于$\mathbf{\phi}$是三维向量，我们可以定义它的模长和它的方向，分别记作$\theta$和$\mathbf{a}$（注意这里记号是有含义的，此时$\mathbf{a}$是一个单位长度的向量），那么按照上式，可以推出如下公式，注意中间使用了上面讲到了两个反对称矩阵的性质：</p>
+<p>$$<br>\exp \left( { {\mathbf{\phi} ^ \wedge } } \right) = \exp \left( {\theta {\mathbf{a}^ \wedge } } \right) = \sum\limits_{n = 0}^\infty {\frac{1}{ {n!} }{ {\left( {\theta {\mathbf{a}^ \wedge } } \right)}^n} } \ =\mathbf{I} + \theta {\mathbf{a}^ \wedge } + \frac{1}{ {2!} }{\theta ^2}{\mathbf{a}^ \wedge }{\mathbf{a}^ \wedge } + \frac{1}{ {3!} }{\theta ^3}{\mathbf{a}^ \wedge }{\mathbf{a}^ \wedge }{\mathbf{a}^ \wedge } + \frac{1}{ {4!} }{\theta ^4}{\left( { {\mathbf{a}^ \wedge } } \right)^4} + …\ =\mathbf{a} {\mathbf{a}^T} - {\mathbf{a}^ \wedge }{\mathbf{a}^ \wedge } + \theta {\mathbf{a}^ \wedge } + \frac{1}{ {2!} }\theta {\mathbf{a}^ \wedge }{\mathbf{a}^ \wedge } - \frac{1}{ {3!} }{\theta ^3}{\mathbf{a}^ \wedge } + \frac{1}{ {4!} }{\theta ^4}{\left( { {\mathbf{a}^ \wedge } } \right)^4} + …\= \mathbf{a}{\mathbf{a}^T} + \left( {\theta - \frac{1}{ {3!} }{\theta ^3} + \frac{1}{ {5!} }{\theta ^5} - …} \right){\mathbf{a}^ \wedge } - \left( {1 - \frac{1}{ {2!} }{\theta ^2} + \frac{1}{ {4!} }{\theta ^4} - …} \right){\mathbf{a}^ \wedge }{\mathbf{a}^ \wedge }\= {\mathbf{a}^ \wedge }{\mathbf{a}^ \wedge } + \mathbf{I} + \sin \theta {\mathbf{a}^ \wedge } - \cos \theta {\mathbf{a}^ \wedge }{\mathbf{a}^ \wedge }\= (1 - \cos \theta ){\mathbf{a}^ \wedge }{\mathbf{a}^ \wedge } + I + \sin \theta {\mathbf{a}^ \wedge }\= \cos \theta \mathbf{I} + (1 - \cos \theta )\mathbf{a}{\mathbf{a}^T} + \sin \theta {\mathbf{a}^ \wedge }<br>$$</p>
+<p>最后我们得到了一个似曾相识的式子：</p>
+<p>$$<br>\exp( \theta \mathbf{a} ) = \cos \theta \mathbf{I} + (1 - \cos \theta )\mathbf{a}{\mathbf{a}^T} + \sin \theta {\mathbf{a}^ \wedge }<br>$$</p>
+<p>回忆前一节内容，它和<strong>罗德里格斯公式</strong>如出一辄。这表明，$\mathfrak{so}(3)$实际上就是由所谓的<strong>旋转向量</strong>组成的空间。特别地，当转轴取一定顺序时，李代数$\mathfrak{so}(3)$还会变为对应的欧拉角。通过罗德里格斯公式或者指数映射，我们把$\mathbb{R}^3$ 中的一个向量对应到了一个位于$SO(3)$中的3D旋转。</p>
+<p>反之，如果定义对数映射，我们也能把$SO(3)$中的元素对应到$\mathfrak{so}(3)$中</p>
+<p>$$<br>\mathbf{\phi} = \ln {\left( \mathbf{R} \right)^ \vee } = {\left( {\sum\limits_{n = 0}^\infty {\frac{ { { {\left( { - 1} \right)}^n } } }{ {n + 1} }{ {\left( { \mathbf{R} - \mathbf{I} } \right)}^{n + 1} } } } \right)^ \vee }<br>$$</p>
+<p>其中$^\vee$表示从反对称矩阵到向量的对应关系，为$^\wedge$的逆运算。</p>
+<p>读者可能会问，指数映射性质如何呢？它是一个双射吗？很遗憾，它只是一个满射。每个$SO(3)$中的元素，都可以找到$\mathfrak{so}(3)$中至少一个与之对应；但是可能存在多个$\mathfrak{so}(3)$中的元素，对应到同一个$SO(3)$元素上。至少对于旋转角$\theta$，我们知道它具有周期性。</p>
+<p>$SO(3)$与$\mathfrak{so}(3)$的结论似乎在我们意料之中。它和我们前面讲的旋转向量与旋转矩阵很相似，而指数映射即是罗德里格斯公式。旋转向量可以视为旋转矩阵的导数，指导如何在旋转矩阵中进行微积分运算。</p>
+<h2 id="三维欧氏群与对应的李代数"><a href="#三维欧氏群与对应的李代数" class="headerlink" title="三维欧氏群与对应的李代数"></a>三维欧氏群与对应的李代数</h2><p>下面我们来介绍三维欧氏群$SE(3)$以及对应的李代数$\mathfrak{se}(3)$。有了前面的基础，我们可以直接介绍它们的结构及运算了。$SE(3)$的结构已经在前面介绍群的时候给出：</p>
+<p>$$<br>SE(3) = \left{ \mathbf{T} =\begin{bmatrix}\mathbf{R} &amp; \mathbf{t} \{ {\mathbf{0}^T} } &amp; 1 \end{bmatrix} \in \mathbb{R}^{4 \times 4} | \mathbf{R} \in SO(3), \mathbf{t} \in \mathbb{R}^3\right}<br>$$</p>
+<p>每个变换矩阵有六个四由度，故对应的李代数位于$\mathbb{R}^6$中：$\mathfrak{se}(3) = \left{ \mathbf{ \Xi } = \mathbf{\xi}^\wedge \in \mathbb{R}^{4 \times 4} | \mathbf{\xi} \in \mathbb{R}^6 \right}$</p>
+<p>但是$^\wedge$不再对应到一个反对称关系，而是</p>
+<p>$$<br>\mathbf{\xi}^\wedge = \begin{bmatrix}\mathbf{\rho} \ \mathbf{\phi} \end{bmatrix}^ \wedge = \begin{bmatrix}	{ {\mathbf{\phi} ^ \wedge } }&amp;\mathbf{\rho} \{ {\mathbf{0}^T} }&amp;0\end{bmatrix} = \mathbf{\Xi}<br>$$</p>
+<p>可以看到，$\mathbf{\xi}$ 的前三维为旋转向量，后三维为平移向量，其定义也十分的直观。该李代数对应于微分方程：$\mathbf{\dot{T} }(t) = \mathbf{\xi}^\wedge(t) \mathbf{T}(t)$，因此$\mathbf{T}(t) = \exp ( \mathbf{\xi}(t)^\wedge ) \mathbf{T}(t)$。那么$\mathfrak{se}(3)$上的指数映射如何呢？略加推导可得：</p>
+<p>$$<br>\exp \left( { { \mathbf{\xi} ^ \wedge } } \right) = \begin{bmatrix} {\sum\limits_{n = 0}^\infty {\frac{1}{ {n!} }{ {\left( { {\mathbf{\phi} ^ \wedge } } \right)}^n} } }&amp;{\sum\limits_{n = 0}^\infty {\frac{1}{ {\left( {n + 1} \right)!} }{ {\left( { {\mathbf{\phi} ^ \wedge } } \right)}^n} \mathbf{\rho} } }\ { {\mathbf{0}^T} }&amp;1	\end{bmatrix}\= \begin{bmatrix} \mathbf{\Phi} &amp;{\mathbf{J\rho} } \{ {\mathbf{0}^T} }&amp;1 \end{bmatrix}<br>$$</p>
+<p>左上角的$\mathbf{\Phi}$是我们熟知的$\mathfrak{so}(3)$中的元素，前文已经介绍过了。而右上角的$\mathbf{J}$则可整理为（设$\mathbf{\phi}=\theta\mathbf{a}$）：</p>
+<p>$$<br>\mathbf{J} = \frac{ {\sin \theta } }{\theta } \mathbf{I} + \left( {1 - \frac{ {\sin \theta } }{\theta } } \right) \mathbf{a} { \mathbf{a}^T} + \frac{ {1 - \cos \theta } }{\theta }{ \mathbf{a}^ \wedge }<br>$$</p>
+<p>因此我们就得到了$\mathfrak{se}(3)$的指数映射的关系。 其对数映射亦可类比推得。</p>
+<p><img src="https://s2.loli.net/2024/03/25/9d8X5enQjCgKiUZ.jpg" alt="list.jpg"></p>
+<h1 id="李代数求导与扰动模型"><a href="#李代数求导与扰动模型" class="headerlink" title="李代数求导与扰动模型"></a>李代数求导与扰动模型</h1><h2 id="BCH公式与近似形式"><a href="#BCH公式与近似形式" class="headerlink" title="BCH公式与近似形式"></a>BCH公式与近似形式</h2><p>使用李代数的一大目的是进行优化，在优化过程中导数是非常必要的信息。考虑一个问题，当在$SO(3)$中完成两个矩阵乘法时，李代数中$SO(3)$上发生了什么改变？反过来说，当$SO(3)$上做两个李代数的加法时，$SO(3)$上是否对应着两个矩阵的乘积？如果成立，相当于：$\exp( \phi _ {1}^ {\wedge } )\exp( \phi _ {2}^ {\wedge } )=\exp(( \phi _ {1} + \phi _ {2} ) \wedge )$ ？</p>
+<p>如果$\phi_ {1} \phi_{2}$为标量，显然该式成立；但此处计算的是矩阵的指数函数，而非标量的指数。换言之是在研究下式是否成立：$ln(\exp(A)\exp(B)) = A + B$</p>
+<p>该式在矩阵时并不成立。两个李代数指数映射乘积的完整形式，由 <strong>Baker-Campbell-Hausdorff公式（BCH公式）</strong>出。</p>
+<p>$$<br>\ln ( \exp(A) \exp(B))=A+B+ \frac {1}{2} [A,B]+ \frac {1}{12} [A,[A,B]]- \frac {1}{12} [B,[A,B]]+ \cdots<br>$$</p>
+<p>其中 $[]$ 为李括号。BCH 公式说明，当处理两个矩阵指数之积时，它们会产生一些由李括号组成的余项。特别地，考虑$SO(3)$上的李代数，当$\phi_ {1}$ 或$\phi_{2}$为小量时，小于二次以上的项都可以被忽略掉。此时，BCH拥有线性近似表达 ：</p>
+<p>$$<br> \ln (\exp( \phi_{1}^{\wedge} )\exp(\phi_{2}^{\wedge}))^\vee \approx  \begin{cases}\mathbf{J}<em>{l}(\phi</em>{2})^{-1}\phi_{1}+\phi_{2} \quad 当\phi_{1}为小量 \\mathbf{J}<em>{r} (\phi</em>{1})^{-1}\phi_{2}+\phi_{1} \quad 当\phi_{2}为小量\end{cases}<br>$$</p>
+<p>以第一个近似为例。该式说明，当对一个旋转矩阵$\mathbf{R}<em>2$（李代数为$\phi_2$）左乘一个微小旋转矩阵$\mathbf{R}<em>1$（李代数为$\phi_1$）时，可以近似地看作，在原有的李代数$\phi_2$上加上了一项$\mathbf{J}</em>{l}(\phi</em>{2})^{-1}\phi_{1}$。同理，第二个近似描述了右乘一个微小位移的情况。于是，李代数在BCH近似下，分成了左乘近似和右乘近似两种，在使用时我们须注意使用的是左乘模型还是右乘模型。</p>
+<p>左乘 BCH 近似雅可比</p>
+<p>$$<br>\mathbf{J}_ {l} =\mathbf{J}= \frac {\sin \theta }{\theta } \mathbf{I}+(1- \frac {\sin \theta }{\theta } ) aa^ {T} + \frac {1-\cos \theta }{\theta } a^{\wedge}<br>$$</p>
+<p>它的逆为：</p>
+<p>$$<br>J_ {l}^ {-1} = \frac {\theta }{2} \cot \frac {\theta }{2} I+(1- \frac {\theta }{2}  \cot \frac {\theta }{2} ) aa^ {T} - \frac {\theta }{2} a^{\wedge}<br>$$</p>
+<p>右乘雅可比仅需要对自变量取负号即可：</p>
+<p>$$<br>\mathbf{J}<em>r(\phi) = \mathbf{J}</em>{l}(-\phi)<br>$$</p>
+<h3 id="BCH近似的意义"><a href="#BCH近似的意义" class="headerlink" title="BCH近似的意义"></a><strong>BCH近似的意义</strong></h3><p>假定对某个旋转$\boldsymbol{R}$，对应的李代数为$\phi$。我们给它左乘一个微小旋转，记作$\Delta \boldsymbol{R}$，对应的李代数为$\Delta \phi$。那么，在李群上，得到的结果就是$\Delta \boldsymbol{R} \cdot \boldsymbol{R}$，而在李代数上，根据BCH近似，为$\mathbf{J}^{-1}_{l}(\phi) \Delta \phi + \phi$。合并起来，可以写成：</p>
+<p>$$<br>\exp( \Delta  \phi ^ {\wedge } )\exp( \phi ^{\wedge})=\exp( (\phi +\mathbf{J}_{l}^ {-1}(\phi )\Delta \phi )^ {\wedge } )<br>$$</p>
+<p>反之，如果我们在李代数上进行加法，让一个$\phi$加上 $\Delta \phi$，可以近似为李群上的左右雅可比的乘法：</p>
+<p>$$<br>\exp( (\phi +\Delta \phi )^{\wedge})=\exp(( \mathbf{J}<em>{l} \Delta \phi )^{\wedge})\exp(\phi^ \wedge )=\exp( \phi^\wedge )\exp( (\mathbf{J}</em> {r}\triangle \phi )^ {\wedge })<br>$$</p>
+<p>这为在李代数上做微积分提供了理论基础。同样，对于$SE(3)$，亦有类似的BCH近似：</p>
+<p>$$<br>\exp( \Delta \xi^{\wedge} )\exp (\xi^\wedge)\approx \exp((\mathcal{J}<em>{l}^{-1}\Delta \xi +\xi )^{\wedge }), \ \exp(\xi^\wedge) \exp( \Delta \xi^ \wedge)\approx \exp((\mathcal{J}</em>{r}^{-1}\Delta \xi +\xi )^{\wedge })<br>$$</p>
+<p>这里的$\mathcal{J}_{l}$形式比较复杂，是一个6×6的矩阵。</p>
+<h2 id="SO-3-李代数上的求导"><a href="#SO-3-李代数上的求导" class="headerlink" title="$**SO(3)$李代数上的求导"></a>$**<strong>SO(3)$李代数上的求导</strong></h2><p>在SLAM中，要估计一个相机的位置和姿态，该位姿是由$SO(3)$上的旋转矩阵或$SE(3)$ 上的变换矩阵描述的。设某个时刻机器人的位姿为$T$，它观察到了一个世界坐标位于$p$的点，产生了一个观测数据$z$。由坐标变换关系知：</p>
+<p>$$<br>z = Tp + w<br>$$</p>
+<p>其中$w$为随机噪声。由于它的存在，$z$ 往往不可能精确地满足$z=Tp$的关系。所以通常会计算理想的观测与实际数据的误差：</p>
+<p>$$<br>e =z−Tp<br>$$</p>
+<p>假设一共有$N$个这样的路标点和观测，于是就有$N$个上式。那么，对机器人的位姿估计，相当于是寻找一个最优的$T$，使得整体误差最小化：</p>
+<p>$$<br>\min_\mathbf{T} J(\mathbf{T})= \sum_{i=1}^{N}\parallel z_ {i} - \mathbf{T} \mathbf{p}_ {i}\parallel_{2}^{2}<br>$$</p>
+<p>求解此问题，需要计算目标函数$J$关于变换矩阵T的导数。</p>
+<p>重点是构建与位姿有关的函数，讨论该函数关于位姿的导数，以调整当前的估计值。然而$SO(3),SE(3)$上并没有良好定义的加法，它们是群。如果把$\boldsymbol{T}$当成一个普通矩阵来处理优化，那就必须对它加以约束（旋转矩阵的约束是行列式值唯一，计算复杂）。而从李代数角度来说，由于李代数由向量组成，具有良好的加法运算。</p>
+<p>使用李代数解决求导问题的思路分为两种：</p>
+<ol>
+<li>用李代数表示姿态，然后根据李代数加法来对李代数求导。</li>
+<li>对李群左乘或右乘微小扰动，然后对该扰动求导，称为左扰动和右扰动模型。</li>
+</ol>
+<p>第一种方式对应到李代数的求导模型，而第二种则对应到扰动模型。</p>
+<h2 id="李代数求导"><a href="#李代数求导" class="headerlink" title="李代数求导"></a><strong>李代数求导</strong></h2><p>考虑$SO(3)$上的情况。假设对一个空间点$\boldsymbol{p}$进行了旋转，得到了$\boldsymbol{Rp}$。计算旋转之后点的坐标相对于旋转的导数，记为 ：$\frac{\partial \boldsymbol{Rp} }{\partial \boldsymbol{R} }$</p>
+<p>由于$SO(3)$没有加法，所以该导数无法按照导数的定义进行计算$\boldsymbol{R}$。设对应的李代数为$\phi$，转而计算$\frac{\partial\left(\exp \left(\boldsymbol{\phi}^{\wedge}\right) \boldsymbol{p}\right)}{\partial \boldsymbol{\phi} }$</p>
+<p>按照导数的定义，推导出了旋转后的点相对于李代数的导数：$\frac{\partial(\boldsymbol{R} \boldsymbol{p})}{\partial \boldsymbol{\phi} }=(-\boldsymbol{R} \boldsymbol{p})^{\wedge} \boldsymbol{J}_{l}$</p>
+<p>注：这里并不能按照矩阵微分来定义导数，只是一个记号。</p>
+<h3 id="扰动模型（左乘）"><a href="#扰动模型（左乘）" class="headerlink" title="扰动模型（左乘）"></a><strong>扰动模型（左乘）</strong></h3><p>另一种求导方式是对$\boldsymbol{R}$进行一次扰动$\Delta \boldsymbol{R}$，看结果相对于扰动的变化率。这个扰动可以乘在左边也可以乘在右边，最后结果会有一点微小的差异。以左扰动为例，设左扰动$\Delta \boldsymbol{R}$对应的李代数为$\varphi$。对$\varphi$求导，即：</p>
+<p>$$<br>\frac{\partial(\boldsymbol{R} \boldsymbol{p})}{\partial \boldsymbol{\varphi} }=\lim_{\boldsymbol{\varphi} \rightarrow \boldsymbol{0} }\frac{\exp(\boldsymbol{\varphi}^\wedge) \exp(\boldsymbol{\phi}^\wedge)\boldsymbol{p} - \exp(\boldsymbol{\phi}^\wedge)\boldsymbol{p} }{\boldsymbol{\varphi} } \ =\lim_{\boldsymbol{\varphi} \rightarrow \boldsymbol{0} }\frac{(\boldsymbol{I}+{\varphi}^\wedge) \exp(\boldsymbol{\phi}^\wedge)\boldsymbol{p} - \exp(\boldsymbol{\phi}^\wedge)\boldsymbol{p} }{\boldsymbol{\varphi} }\ = \lim_{\boldsymbol{\varphi} \rightarrow \boldsymbol{0} }\frac{\boldsymbol{\varphi}^\wedge \boldsymbol{Rp} }{\boldsymbol{\varphi} } = \lim_{\boldsymbol{\varphi} \rightarrow \boldsymbol{0} }\frac{-(\boldsymbol{Rp})^\wedge \boldsymbol{\varphi} }{\boldsymbol{\varphi} } = -(\boldsymbol{Rp})^\wedge<br>$$</p>
+<p>相比于直接对李代数求导，省去了一个雅可比矩阵的计算。这使得扰动模型更为实用，在位姿估计当中具有重要的意义。</p>
+<h3 id="SE-3-上的李代数求导"><a href="#SE-3-上的李代数求导" class="headerlink" title="$SE(3)$上的李代数求导"></a>$<strong>SE(3)$上的李代数求导</strong></h3><p>书中只给出$SE(3)$上的扰动模型。假设某空间点$\boldsymbol{p}$经过一次变换$\boldsymbol{T}$（对应李代数为$\boldsymbol{\xi}$），得到$\boldsymbol{Tp}$。给$\boldsymbol{T}$左乘一个扰动$\Delta \boldsymbol{T}= \exp(\delta \boldsymbol{\xi}^\wedge)$，设扰动项的李代数为 $\delta \boldsymbol{\xi} = [\delta \boldsymbol{\rho},\delta \boldsymbol{\phi}]^T$，那么：</p>
+<p>$$<br>\frac{\partial(\boldsymbol{T} \boldsymbol{p})}{\partial \delta \boldsymbol{\xi} }=\lim_{\delta \boldsymbol{\xi} \rightarrow \boldsymbol{0} }\frac{\exp(\delta \boldsymbol{\xi}^\wedge) \exp(\boldsymbol{\xi}^\wedge)\boldsymbol{p} - \exp(\boldsymbol{\xi}^\wedge)\boldsymbol{p} }{\boldsymbol{\xi} } \=\lim_{\delta \boldsymbol{\xi} \rightarrow \boldsymbol{0} }\frac{(\boldsymbol{I}+\delta \boldsymbol{\xi}^\wedge) \exp(\boldsymbol{\xi}^\wedge)\boldsymbol{p} - \exp(\boldsymbol{\xi}^\wedge)\boldsymbol{p} }{\delta \boldsymbol{\xi} }\ = \lim_{\delta \boldsymbol{\xi} \rightarrow \boldsymbol{0} }\frac {\begin{bmatrix} \delta\phi^\wedge &amp; \delta \boldsymbol{\rho}\\boldsymbol{0}^T &amp; 0\end{bmatrix}\begin{bmatrix} \boldsymbol{Rp}+\boldsymbol{t}\1\end{bmatrix} }{\delta \boldsymbol{\xi} } \ =\lim_{\delta \boldsymbol{\xi} \rightarrow \boldsymbol{0} }\frac {\begin{bmatrix} \delta\phi^\wedge(\boldsymbol{Rp}+\boldsymbol{t}) + \delta \boldsymbol{\rho}\ \boldsymbol{0}^T \end{bmatrix} }{\begin{bmatrix} \delta \boldsymbol{\rho},\delta \boldsymbol{\phi}\end{bmatrix}^T} \=\begin{bmatrix} \boldsymbol{I} &amp; -(\boldsymbol{Rp}+\boldsymbol{t})^\wedge \  \boldsymbol{0}^T &amp; \boldsymbol{0}^T\end{bmatrix}\xlongequal{def} (\boldsymbol{Tp})^{\bigodot}<br>$$</p>
+<p>把最后的结果定义成一个算符$^{\bigodot}$ ，它把一个齐次坐标的空间点变换成一个4×6的矩阵。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://thinksky5124.github.io">Thyssen Wen</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://thinksky5124.github.io/2022/08/18/SLAM_math_fundation/">https://thinksky5124.github.io/2022/08/18/SLAM_math_fundation/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://thinksky5124.github.io" target="_blank">Thyssen Wen's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/SLAM/">SLAM</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86/">数学原理</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/08/18/PyTorch%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%AD%E7%BB%83/" title="PyTorch分布式训练"><img class="cover" src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">PyTorch分布式训练</div></div></a></div><div class="next-post pull-right"><a href="/2022/08/18/%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8C%96/" title="权重初始化"><img class="cover" src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">权重初始化</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://avatars.githubusercontent.com/u/40914433?v=4" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Thyssen Wen</div><div class="author-info__description">既然选择远方，就要风雨兼程</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">17</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Thinksky5124"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">不定期更新Blog，主要研究图像方面的人工智能，人工智能硬件等</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SLAM%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">SLAM数学基础</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E7%BB%B4%E7%A9%BA%E9%97%B4%E7%9A%84%E5%88%9A%E4%BD%93%E8%BF%90%E5%8A%A8"><span class="toc-number">2.</span> <span class="toc-text">三维空间的刚体运动</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5"><span class="toc-number">2.1.</span> <span class="toc-text">旋转矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%BD%90%E6%AC%A1%E5%9D%90%E6%A0%87"><span class="toc-number">2.2.</span> <span class="toc-text">齐次坐标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%8B%E8%BD%AC%E5%90%91%E9%87%8F%E5%92%8C%E6%AC%A7%E6%8B%89%E8%A7%92"><span class="toc-number">2.3.</span> <span class="toc-text">旋转向量和欧拉角</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%8B%E8%BD%AC%E5%90%91%E9%87%8F"><span class="toc-number">2.3.1.</span> <span class="toc-text">旋转向量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AC%A7%E6%8B%89%E8%A7%92"><span class="toc-number">2.3.2.</span> <span class="toc-text">欧拉角</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E5%85%83%E6%95%B0"><span class="toc-number">2.4.</span> <span class="toc-text">四元数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">2.4.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E5%9B%9B%E5%85%83%E6%95%B0%E8%A1%A8%E7%A4%BA%E6%97%8B%E8%BD%AC"><span class="toc-number">2.4.2.</span> <span class="toc-text">用四元数表示旋转</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E6%8D%A2%E7%9A%84%E7%A7%8D%E7%B1%BB"><span class="toc-number">2.5.</span> <span class="toc-text">变换的种类</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%8E%E7%BE%A4%E5%92%8C%E6%9D%8E%E4%BB%A3%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">李群和李代数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">3.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%8E%E4%BB%A3%E6%95%B0%E5%9F%BA%E7%A1%80"><span class="toc-number">3.2.</span> <span class="toc-text">李代数基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E7%BB%B4%E6%97%8B%E8%BD%AC%E7%BE%A4-SO-3"><span class="toc-number">3.3.</span> <span class="toc-text">三维旋转群$SO(3)$</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%8E%E4%BB%A3%E6%95%B0"><span class="toc-number">3.4.</span> <span class="toc-text">李代数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E7%BB%B4%E6%97%8B%E8%BD%AC%E7%BE%A4%E4%B8%8E%E5%AF%B9%E5%BA%94%E7%9A%84%E6%9D%8E%E4%BB%A3%E6%95%B0"><span class="toc-number">3.5.</span> <span class="toc-text">三维旋转群与对应的李代数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E6%95%B0%E6%98%A0%E5%B0%84"><span class="toc-number">3.6.</span> <span class="toc-text">指数映射</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E7%BB%B4%E6%AC%A7%E6%B0%8F%E7%BE%A4%E4%B8%8E%E5%AF%B9%E5%BA%94%E7%9A%84%E6%9D%8E%E4%BB%A3%E6%95%B0"><span class="toc-number">3.7.</span> <span class="toc-text">三维欧氏群与对应的李代数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%8E%E4%BB%A3%E6%95%B0%E6%B1%82%E5%AF%BC%E4%B8%8E%E6%89%B0%E5%8A%A8%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">李代数求导与扰动模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#BCH%E5%85%AC%E5%BC%8F%E4%B8%8E%E8%BF%91%E4%BC%BC%E5%BD%A2%E5%BC%8F"><span class="toc-number">4.1.</span> <span class="toc-text">BCH公式与近似形式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#BCH%E8%BF%91%E4%BC%BC%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-number">4.1.1.</span> <span class="toc-text">BCH近似的意义</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SO-3-%E6%9D%8E%E4%BB%A3%E6%95%B0%E4%B8%8A%E7%9A%84%E6%B1%82%E5%AF%BC"><span class="toc-number">4.2.</span> <span class="toc-text">$**SO(3)$李代数上的求导</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%8E%E4%BB%A3%E6%95%B0%E6%B1%82%E5%AF%BC"><span class="toc-number">4.3.</span> <span class="toc-text">李代数求导</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%B0%E5%8A%A8%E6%A8%A1%E5%9E%8B%EF%BC%88%E5%B7%A6%E4%B9%98%EF%BC%89"><span class="toc-number">4.3.1.</span> <span class="toc-text">扰动模型（左乘）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SE-3-%E4%B8%8A%E7%9A%84%E6%9D%8E%E4%BB%A3%E6%95%B0%E6%B1%82%E5%AF%BC"><span class="toc-number">4.3.2.</span> <span class="toc-text">$SE(3)$上的李代数求导</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/04/16/hello-world/" title="Hello World"><img src="https://s2.loli.net/2024/03/25/TXt51eJvamH9bjP.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2024/04/16/hello-world/" title="Hello World">Hello World</a><time datetime="2024-04-16T08:57:05.647Z" title="发表于 2024-04-16 16:57:05">2024-04-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/25/TensorRT_deploy_and_infer/" title="TensorRT 模型构建与推理"><img src="https://s2.loli.net/2024/03/25/TXt51eJvamH9bjP.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="TensorRT 模型构建与推理"/></a><div class="content"><a class="title" href="/2024/03/25/TensorRT_deploy_and_infer/" title="TensorRT 模型构建与推理">TensorRT 模型构建与推理</a><time datetime="2024-03-25T03:17:41.679Z" title="发表于 2024-03-25 11:17:41">2024-03-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/18/CPU_GPU%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/" title="CPU/GPU联合编程"><img src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CPU/GPU联合编程"/></a><div class="content"><a class="title" href="/2022/08/18/CPU_GPU%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/" title="CPU/GPU联合编程">CPU/GPU联合编程</a><time datetime="2022-08-18T08:00:00.000Z" title="发表于 2022-08-18 16:00:00">2022-08-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/18/CUDA%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/" title="CUDA编程模型基础"><img src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CUDA编程模型基础"/></a><div class="content"><a class="title" href="/2022/08/18/CUDA%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/" title="CUDA编程模型基础">CUDA编程模型基础</a><time datetime="2022-08-18T08:00:00.000Z" title="发表于 2022-08-18 16:00:00">2022-08-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/18/Dispatcher/" title="Dispatcher"><img src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Dispatcher"/></a><div class="content"><a class="title" href="/2022/08/18/Dispatcher/" title="Dispatcher">Dispatcher</a><time datetime="2022-08-18T08:00:00.000Z" title="发表于 2022-08-18 16:00:00">2022-08-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Thyssen Wen</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>

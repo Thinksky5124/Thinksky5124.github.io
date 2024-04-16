@@ -1,0 +1,340 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Normalization | Thyssen Wen's Blog</title><meta name="author" content="Thyssen Wen"><meta name="copyright" content="Thyssen Wen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Normalization的各种方式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Normalization">
+<meta property="og:url" content="https://thinksky5124.github.io/2022/08/18/%E7%BD%91%E7%BB%9C%E6%AD%A3%E5%88%99%E5%8C%96/index.html">
+<meta property="og:site_name" content="Thyssen Wen&#39;s Blog">
+<meta property="og:description" content="Normalization的各种方式">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png">
+<meta property="article:published_time" content="2022-08-18T08:00:00.000Z">
+<meta property="article:modified_time" content="2024-04-16T08:57:05.647Z">
+<meta property="article:author" content="Thyssen Wen">
+<meta property="article:tag" content="深度学习">
+<meta property="article:tag" content="模型优化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png"><link rel="shortcut icon" href="https://avatars.githubusercontent.com/u/40914433?v=4"><link rel="canonical" href="https://thinksky5124.github.io/2022/08/18/%E7%BD%91%E7%BB%9C%E6%AD%A3%E5%88%99%E5%8C%96/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Normalization',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-04-16 16:57:05'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Thyssen Wen's Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://avatars.githubusercontent.com/u/40914433?v=4" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">17</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.dlut.edu.cn/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Thyssen Wen's Blog"><span class="site-name">Thyssen Wen's Blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.dlut.edu.cn/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Normalization</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-08-18T08:00:00.000Z" title="发表于 2022-08-18 16:00:00">2022-08-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-04-16T08:57:05.647Z" title="更新于 2024-04-16 16:57:05">2024-04-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8C%96/">模型优化</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8C%96/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Normalization"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="网络正则化"><a href="#网络正则化" class="headerlink" title="网络正则化"></a>网络正则化</h1><h1 id="Normalization"><a href="#Normalization" class="headerlink" title="Normalization"></a>Normalization</h1><h2 id="Batch-Normalization"><a href="#Batch-Normalization" class="headerlink" title="Batch Normalization"></a><strong><strong>Batch Normalization</strong></strong></h2><p>BN的公式：</p>
+<p><img src="https://s2.loli.net/2024/03/25/RI5K7EbTkqzYCPQ.png" alt="BN_formula.png"></p>
+<p>BN就是在深度神经网络训练时通过对每一个batch的数据采用均值和方差进行归一化，使得每一层神经网络的输入保持相同的分布，这样能够加快训练的速度。此外，因为在训练时，为每一次迭代求全局的均值和方差是不现实的，因此借鉴moment的方式对均值和方差进行更新，使得每一层归一化的均值和方差都不一样，也相当于引入了噪声，能够增加模型的鲁棒性，有效减少过拟合。</p>
+<h2 id="Layer-Normalization"><a href="#Layer-Normalization" class="headerlink" title="Layer Normalization"></a>Layer <strong><strong>Normalization</strong></strong></h2><p><img src="https://s2.loli.net/2024/03/25/iM2fH1PO7jagWTI.png" alt="layer_norm.png"></p>
+<p><img src="https://s2.loli.net/2024/03/25/Y5aDRWQ9fANZLu4.png" alt="layer_norm1.png"></p>
+<p>BN抹平了不同特征之间的大小关系，而保留了不同样本之间的大小关系。</p>
+<ul>
+<li>不同图片的的同一通道的相对关系是保留的，即不同图片的同一通达的特征是可以比较的</li>
+<li>同一图片的不同通道的特征则是失去了可比性</li>
+</ul>
+<p>LN抹平了不同样本之间的大小关系，而保留了不同特征之间的大小关系。</p>
+<ul>
+<li>同一句子中词义向量的相对大小是保留的，或者也可以说LayerNorm不改变词义向量的方向，只改变它的模。</li>
+<li>不同句子的词义向量则是失去了可比性。</li>
+</ul>
+<h2 id="Batch-Normalization-注意事项"><a href="#Batch-Normalization-注意事项" class="headerlink" title="Batch Normalization 注意事项"></a><strong><strong>Batch Normalization 注意事项</strong></strong></h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/380620373">BatchNorm避坑指南</a></p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2105.07576.pdf">论文链接</a></p>
+<p>注意此语境下主要讨论的都是图像处理领域中的BatchNormalization应用问题，所以讨论的是BatchNorm2D。在训练阶段对形状为[N,C,H,W]的mini-batch<strong>X</strong>，BatchNorm首先计算各个通道上的均值和方差：</p>
+<p><img src="https://s2.loli.net/2024/03/25/HejY7ZVpOxSIJow.png" alt="bn_var_mean.png"></p>
+<p>然后，在对特征x进行归一化：</p>
+<p><img src="https://s2.loli.net/2024/03/25/AEsFmo3nzC9byhf.png" alt="fe_norm.png"></p>
+<p>可以看到计算均值和方差是依赖batch的，这也就是BatchNorm的名字由来。在测试阶段，BatchNorm采用的均值和方差是从训练过程估计的全局统计量（population statistics）：$\mu_{pop}$和$\sigma_{pop}^2$，这两个参数也是从训练数据学习到的参数（但不是可训练参数，没有BP过程）。常规的做法在训练阶段采用EMA（ exponential moving average，指数移动平均，在<a target="_blank" rel="noopener" href="https://www.tensorflow.org/api_docs/python/tf/keras/layers/BatchNormalization">TensorFlow</a>中EMA产生的均值和方差称为<code>moving_mean</code>和<code>moving_var</code>，而<a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/generated/torch.nn.BatchNorm2d.html">PyTorch</a>则称为<code>running_mean</code>和<code>running_var</code>）来估计：</p>
+<p><img src="https://s2.loli.net/2024/03/25/169SXwRF5Vva7pe.png" alt="bn_form.png"></p>
+<p>训练阶段采用的是mini-batch统计量，而测试阶段是采用全局统计量，这就造成了BatchNorm的训练和测试不一致问题，这个后面会详细讨论。</p>
+<p>除了归一化，BatchNorm还包含对各个channel的特征做affine transform（增加特征表征能力）：</p>
+<p><img src="https://s2.loli.net/2024/03/25/OxmHYy42NMkvJVp.png" alt="bn_form_1.png"></p>
+<p>这里的$\gamma$和$\beta$是可训练的参数，但是这个过程其实没有batch的参与，从实现上等价于额外增加一个depthwise 1 × 1卷积层。BatchNorm的麻烦主要来自于mini-batch统计量的计算和归一化中，这个affine transform不是影响因素，所以后面的讨论主要集中在前面。</p>
+<p>围绕着<code>batch</code>所能带来的问题，论文共讨论了BatchNorm的四个方面：</p>
+<ul>
+<li><strong>Population Statistics</strong>：EMA是否能够准确估计全局统计量以及PreciseBN；</li>
+<li><strong>Batch in Training and Testing</strong>：训练采用mini-batch统计量，而测试采用全局统计量，由此带来的不一致问题；</li>
+<li><strong>Batch from Different Domains</strong>：BatchNorm在multiple domains中遇到的问题；</li>
+<li><strong>Information Leakage within a Batch</strong>：BatchNorm所导致的信息泄露问题；</li>
+</ul>
+<p>第二个应该是大家都熟知的问题，但是其实BatchNorm可能影响的方面是很多的，如域适应（domain adaptation)和对比学习中信息泄露问题。另外，这里讨论的4个方面也不是独立的，它们往往交织在一起。</p>
+<h3 id="Population-Statistics"><a href="#Population-Statistics" class="headerlink" title="Population Statistics"></a><strong>Population Statistics</strong></h3><p>训练过程中的均值和方差是mini-batch计算出来的，但是在推理阶段往往是每次只处理一个sample，没有办法再计算依赖batch的统计量。BatchNorm采用的方法是训练过程中用EMA估计全局统计量，但是这个估计可能会够好：当$\lambda$较大时，每个iteration中mini-batch的统计量对全局统计量贡献很少，这会导致更新过慢；当$\lambda$较大时，每个iteration中mini-batch的统计量会起主导作用，导致估计值不能代表全局。一般情况$\lambda$取一个较大的值，如0.9或0.99，这是一个超参数。论文中在ResNet50的训练过程（256 GPU，每个GPU <code>batch_size</code>=32）随机选择模型的某个BatchNorm层的某个channel，绘制了其EMA mean以及population mean，这里的population mean采用当前模型在100 mini-batches的batch mean的平均值来估计，这个可以代表当前模型的全局统计量，对比图如下所示。在训练前期，从图a可以看到EMA mean和当前的batch mean是有距离的，而图b说明EMA mean是落后于当前模型的近似全局统计量的，但是到训练中后期EMA mean就比较准确了。</p>
+<p><img src="https://s2.loli.net/2024/03/25/ZUbEKdvcnfOCTiR.png" alt="stable_exp.png"></p>
+<p>这说明EMA统计量在训练早期是有偏差的。一个准确的全局统计量应该是：使用整个训练集作为一个batch计算特征的均值和方差，但是这个计算成本太高了，论文中提出采用一种近似方法来计算：首先采用固定模型（训练好的）计算很多mini-batch；然后聚合每个mini-batch的统计量来得到全局统计量。假定共需要计算$N$个samples，<code>batch_size</code>为$B$，那么共计算$k=N/B$个mini-batch，记它们的统计量为$\mu_{B_i}$，$\sigma^2_{B_i}(i=1,…,k)$，那么全局统计量可以近似这样计算：</p>
+<p><img src="https://s2.loli.net/2024/03/25/32UhneIoX8RLsQD.png" alt="bn_form_2.png"></p>
+<p>这其实只是一种聚合方式，论文附录也讨论了其它计算方式，结果是类似的。这种BatchNorm称为<code>PreciseBN</code>，具体代码实现可以参考<a target="_blank" rel="noopener" href="https://github.com/facebookresearch/fvcore/blob/main/fvcore/nn/precise_bn.py">fvcore.nn.precise_bn</a>：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">_PopulationVarianceEstimator</span>:</span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Alternatively, one can estimate population variance by the sample variance</span></span><br><span class="line"><span class="string">    of all batches combined. This needs to use the batch size of each batch</span></span><br><span class="line"><span class="string">    in this function to undo the bessel-correction.</span></span><br><span class="line"><span class="string">    This produces better estimation when each batch is small.</span></span><br><span class="line"><span class="string">    See Appendix of the paper "Rethinking Batch in BatchNorm" for details.</span></span><br><span class="line"><span class="string">    In this implementation, we also take into account varying batch sizes.</span></span><br><span class="line"><span class="string">    A batch of N1 samples with a mean of M1 and a batch of N2 samples with a</span></span><br><span class="line"><span class="string">    mean of M2 will produce a population mean of (N1M1+N2M2)/(N1+N2) instead</span></span><br><span class="line"><span class="string">    of (M1+M2)/2.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, mean_buffer: torch.Tensor, var_buffer: torch.Tensor</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        self.pop_mean: torch.Tensor = torch.zeros_like(mean_buffer) <span class="comment"># population mean</span></span><br><span class="line">        self.pop_square_mean: torch.Tensor = torch.zeros_like(var_buffer) <span class="comment"># population variance </span></span><br><span class="line">        self.tot = <span class="number">0</span> <span class="comment"># total samples</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># update per mini-batch, is called by `update_bn_stats`</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">update</span>(<span class="params"></span></span><br><span class="line"><span class="params">        self, batch_mean: torch.Tensor, batch_var: torch.Tensor, batch_size: <span class="built_in">int</span></span></span><br><span class="line"><span class="params">    </span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        self.tot += batch_size</span><br><span class="line">        batch_square_mean = batch_mean.square() + batch_var * (</span><br><span class="line">            (batch_size - <span class="number">1</span>) / batch_size</span><br><span class="line">        )</span><br><span class="line">        self.pop_mean += (batch_mean - self.pop_mean) * (batch_size / self.tot)</span><br><span class="line">        self.pop_square_mean += (batch_square_mean - self.pop_square_mean) * (</span><br><span class="line">            batch_size / self.tot</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">pop_var</span>(<span class="params">self</span>) -&gt; torch.Tensor:</span><br><span class="line">        <span class="keyword">return</span> self.pop_square_mean - self.pop_mean.square()</span><br></pre></td></tr></tbody></table></figure>
+
+<p>论文中以ResNet50的训练为例对比了EMA和PreciseBN的效果，如下图所示，可以看到PreciseBN比EMA效果更加稳定，特别是训练早期（此时模型未收敛），虽然最终两者的效果接近。</p>
+<p><img src="https://s2.loli.net/2024/03/25/wlPHIycaRTDFX2s.png" alt="train_stable_exp.png"></p>
+<p>进一步地，如果训练采用更大的batch size，实验发现EMA在训练过程中的抖动更大，但此时PreciseBN效果比较稳定。当采用larger batch训练时，学习速率增大，而且EMA更新次数减少，这些都会对EMA产生较大影响。<strong>综上，虽然EMA和PreciseBN最终效果接近（因此EMA的缺点往往被忽视），但是在模型未收敛的训练早期，PreciseBN更加稳定，像强化学习需要在训练早期评估模型效果这种场景，PreciseBN能带来更加稳定可靠的结果。</strong></p>
+<p><img src="https://s2.loli.net/2024/03/25/tmNWwo8vx5eJOXu.png" alt="train_stable_exp_1.png"></p>
+<p>此外，论文也通过实验证明了<strong>PreciseBN只需要$10^3-10^4$&nbsp;samples就可以得到比较好的结果</strong>，以ImageNet训练为例，采用PreciseBN评估只需要增加0.5%的训练时间。</p>
+<p><img src="https://s2.loli.net/2024/03/25/LUMTa3rCyefqDiN.png" alt="add_exp_time.png"></p>
+<p>另外，论文里还对比了batch size对PreciseBN的影响。这里先理清楚两个概念：（1）<code>normalization batch size</code>（NBS）：实际计算统计量的mini-batch的size；（2）<code>total batch size</code>或者<code>SGD batch size</code>：每个iteration中mini-batch的size，或者说每执行一次SGD算法的batch size；两者在多卡训练过程是不等同的（此时NBS是per-GPU batch size，而<code>SyncBN</code>可以实现两者一致）。从结果来看，NBS较小时，模型效果会变差，但是<strong>PreciseBN的batch size是相对NBS独立的，所以选择batch size&nbsp;时PreciseBN可以取得稳定的效果，并且在NBS较小时相比EMA提升效果</strong>。</p>
+<p><img src="https://s2.loli.net/2024/03/25/FdLsPHol4zAC9Qe.png" alt="mae_exp_time.png"></p>
+<h3 id="Batch-in-Training-and-Testing"><a href="#Batch-in-Training-and-Testing" class="headerlink" title="Batch in Training and Testing"></a><strong><strong>Batch in Training and Testing</strong></strong></h3><p>前面已经说过BatchNorm在训练时采用的是mini-batch统计量，而测试时采用的全局统计量，这就导致了训练和测试的不一致性，从而带来对模型性能的影响。为此，论文还是以ResNet50训练为例分析这种不一致带来的影响，这里还同时比较了不同NBS带来的差异（SGD batch size固定在1024，此时NBS从2~1024变化），分别对比不同NBS下的三个指标：（1）采用mini-batch统计量在训练集上的分类误差；（2）采用mini-batch统计量在验证集上的分类误差；（3）采用全局统计量在验证集上的分类误差。这里（1）和（3）其实是常规评估方法，而（2）往往不会这样做，但是（1）和（2）就保持一致了（训练和测试均采用mini-batch统计量）。对比结果如下所示，从中可以得到三个方面的结论：</p>
+<ul>
+<li><strong>training noise</strong>：训练集误差随着NBS增大而减少，这主要是由于SGD训练噪音所导致的，当NBS较小时，mini-batch统计量波动大导致优化困难，从而产生较大的训练误差；</li>
+<li><strong>generalization gap</strong>：对比（1）和（2），两者均采用mini-batch统计量，差异就来自数据集不同，这部分性能差异就是泛化gap；</li>
+<li><strong>train-test inconsistency</strong>：对比（2）和（3），两者数据集一样，但是（2）采用mini-batch统计量，而（3）采用全局统计量，这部分性能差异就是训练和测试不一致所导致的；</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/03/25/yYnMCPkjcQaV8gZ.png" alt="exp_fig1.png"></p>
+<p>另外，我们可以看到当NBS较小时，（2）和（3）的性能差距是比较大的，这说明<strong>如果训练的NBS比较小时在测试时采用mini-batch统计量效果会更好</strong>，此时<strong>保持一致是比较重要的</strong>（这点至关重要）。当NBS较大时，（2）和（3）的差异就比较小，此时mini-batch统计量越来越接近全局统计量。</p>
+<p>虽然NBS较小时，在测试时采用mini-batch统计量效果更好，但是在实际场景中几乎不会这样处理（一般情况下都是每次处理一个样本）。不过还是有一些特例，比如两阶段检测模型R-CNN中，R-CNN的head输入是每个图像的一系列region-of-interest (RoIs)，一般情况下一个图像会有$10^2-10^3$个RoIs，实际情况这些RoIs是组成batch进行处理的，训练过程是所有图像的RoIs，而测试时是单个图像的RoIs组成batch，在这种情况中测试时就可以选择mini-batch统计量。这里以Mask R-CNN为实验模型，将默认的<code>2fc box head</code></p>
+<p>（2个全连接层）换成<code>4conv1fc head</code>（4个卷积层加一个，并且在box head和mask head的每个卷积层后面都加上BatchNorm层，实验结果如下，可以看到采用mini-batch统计量是优于采用全局统计量的，另外在训练过程中每个GPU只用一张图像时，此时测试时采用全局统计量效果会很差，这里有另外的过拟合问题存在，后面再述（BatchNorm导致的信息泄露）。另外R-CNN的head还存在另外的一种训练和测试的inconsistency：训练时mini-batch是正负样本抽样的，而测试时是按score选取的topK，mini-batch的分布就发生了变化。</p>
+<p><img src="https://s2.loli.net/2024/03/25/OSZ5NAGDPu419Rc.png" alt="exp_fig2.png"></p>
+<p>另外一个避免训练和测试的inconsistency可选方案是训练也采用全局统计量，常用的方案是Frozen BatchNorm (FrozenBN)（训练中直接采用EMA统计量模型无法训练），FrozenBN指的是采用一个提前算好的固定全局统计量，此时BatchNorm的训练优化就只有一个linear transform了。FrozenBN采用的情景是将一个已经训练好的模型迁移到其它任务，如在ImageNet训练的ResNet模型在迁移到下游检测任务时一般采用FrozenBN。不过我们也可以在模型的训练过程中采用FrozenBN，论文中还是以ResNet50为例，在前80个epoch采用正常的BN训练，在后20个epoch采用FrozenBN，对比效果如下，可以看到FrozenBN在NBS较小时也是表现较好，优于测试时采用mini-batch统计量，这不失为一种好的方案。这里值得注意的是当NBS较大时，FrozenBN还是测试时采用mini-batch统计量均差于常规方案（BN训练，测试时采用全局统计量）。</p>
+<p><img src="https://s2.loli.net/2024/03/25/N3VMORZvClrPjDq.png" alt="exp_fig3.png"></p>
+<p>包含BatchNorm的模型训练过程包含两个学习过程：一是模型主体参数是通过SGD学习得到的（<code>SGD training</code>），二是全局统计量是通过EMA或者PreciseBN从训练数据中学习得到（<code>population statistics training</code>）。当训练数据和测试数据分布不同时，我们称之为domain shift，这个时候学习得到的全局统计量就可能会在测试时失效，这个问题已经有论文提出要采用<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1603.04779">Adaptive BatchNorm</a>来解决，即在测试数据上重新计算全局统计量。这里还是以ResNet50为例（SGD batch size为1024，NBS为32），用ImageNet-C数据集（ImageNet的扰动版本，共三种类型：contrast，gaussian noise和jpeg compression）来评估domain shift问题，结果如下：</p>
+<p><img src="https://s2.loli.net/2024/03/25/OUM4XelHdC63DWE.png" alt="exp_fig4.png"></p>
+<p>从表中可以明显看出：<strong>当出现domain shift问题后，采用Adaptive BatchNorm在target domain数据集上重新计算全局统计量可以提升模型效果</strong>。不过从表最后一行可以看到，如果在ImageNet验证集上重新计算统计量（直接采用inference-time预处理），最终效果要稍微差于原来结果（23.4 VS 23.8），这可能说明如果不存在明显的domain shift，原始处理方式是最好的。</p>
+<p>除了domain shift，训练数据存在multi-domain也会对BatchNorm产生影响，这个问题更复杂了。这里以RetinaNet模型来说明multi-domain的出现可能出现的问题。RetinaNet的head包含4个卷积层以及最终的分类器和回归器，其输入是来自不同尺度的5个特征（$P_3, P_4, P_5,P_6,P_7$)，这可以看成5个不同的domain。head在5个特征上是共享的，默认head是不包含BatchNorm，当我们在head的每个卷积后加上BatchNorm后，问题就变得复杂了。首先，首先就是SGD训练过程mini-batch统计量的计算，明显有两种不同处理方式，一是对不同domain的特征输入单独计算mini-batch统计量并单独归一化，二是将所有domain的特征concat在一起，计算一个mini-batch统计量来归一化。这两种处理方式如下所示：</p>
+<p><img src="https://s2.loli.net/2024/03/25/oxLUhvpTBEAYfFD.png" alt="exp_fig5.png"></p>
+<p>这里记上述SGD训练过程中的两种方式分别为<code>domain-specific statistics</code>和<code>shared statistics</code>。对于学习全局统计量，同样存在对应的两种方式，即每个domain的特征单独学习一套全局统计量，还是共享一套全局统计量。对于BatchNorm的affine transform layer也存在两种选择：每个domain一套参数还是共享参数。不同组合的模型效果如下表所示：</p>
+<p><img src="https://s2.loli.net/2024/03/25/O9AMcNqm15Vl4H7.png" alt="exp_fig6.png"></p>
+<p>从表中结果可以总结两个结论：（1）<strong>SGD training和population statistics training保持一致非常重要</strong>，此时都可以取得较好的结果（行1，行4和行6）；（2）affine transform layer无论单独参数还是共享基本不影响结果。这里的一个小插曲是如果直接在head中加上BatchNorm，其实对应的是行3，其实这是因为不同尺度的特征是序列处理的，这就造成了SGD training其实是domain-specific的，但全局统计量是共享的，此时效果就较差，所以大部分实现中要不然不用norm，要不然就用GroupNorm。不同组合的实现代码如下：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 简单地加上BN，注意forward时，不同特征是串行处理的，那么SGD training其实是domain-specific的，</span></span><br><span class="line"><span class="comment"># 但是只维持一套全局统计量，所以测试时又是共享的</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RetinaNetHead_Row3</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_conv, channel</span>):</span><br><span class="line">        head = []</span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_conv):</span><br><span class="line">            head.append(nn.Conv2d(channel, channel, <span class="number">3</span>))</span><br><span class="line">            head.append(nn.BatchNorm2d(channel))</span><br><span class="line">        self.head = nn.Sequential(∗head)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, inputs: <span class="type">List</span>[Tensor]</span>):</span><br><span class="line">        <span class="keyword">return</span> [self.head(i) <span class="keyword">for</span> i <span class="keyword">in</span> inputs]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果要共享，那么在forward时对特征进行concat来统一计算并归一化 </span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RetinaNetHead_Row1</span>(<span class="title class_ inherited__">RetinaNetHead_Row3</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, inputs: <span class="type">List</span>[Tensor]</span>):</span><br><span class="line">        <span class="keyword">for</span> mod <span class="keyword">in</span> self.head:</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">isinstance</span>(mod, nn.BatchNorm2d):</span><br><span class="line">                <span class="comment"># for BN layer, normalize all inputs together</span></span><br><span class="line">                shapes = [i.shape <span class="keyword">for</span> i <span class="keyword">in</span> inputs]</span><br><span class="line">                spatial_sizes = [s[<span class="number">2</span>] ∗ s[<span class="number">3</span>] <span class="keyword">for</span> s <span class="keyword">in</span> shapes]</span><br><span class="line">                x = [i.flatten(<span class="number">2</span>) <span class="keyword">for</span> i <span class="keyword">in</span> inputs]</span><br><span class="line">                x = torch.cat(x, dim=<span class="number">2</span>).unsqueeze(<span class="number">3</span>)</span><br><span class="line">                x = mod(x).split(spatial_sizes, dim=<span class="number">2</span>)</span><br><span class="line">                inputs = [i.view(s) <span class="keyword">for</span> s, i <span class="keyword">in</span> <span class="built_in">zip</span>(shapes, x)]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># for conv layer, apply it separately</span></span><br><span class="line">                inputs = [mod(i) <span class="keyword">for</span> i <span class="keyword">in</span> inputs]</span><br><span class="line">        <span class="keyword">return</span> inputs</span><br><span class="line"></span><br><span class="line"><span class="comment"># 另外一种简单的处理方式是每个特征采用各自的BN</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RetinaNetHead_Row6</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_conv, channel, num_features</span>):</span><br><span class="line">        <span class="comment"># num_features: number of features coming from</span></span><br><span class="line">        <span class="comment"># different FPN levels, e.g. 5</span></span><br><span class="line">        heads = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_levels)]</span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(num_conv):</span><br><span class="line">            conv = nn.Conv2d(channel, channel, <span class="number">3</span>)</span><br><span class="line">            <span class="keyword">for</span> h <span class="keyword">in</span> heads:</span><br><span class="line">                <span class="comment"># add a shared conv and a domain−specific BN</span></span><br><span class="line">                h.extend([conv, nn.BatchNorm2d(channel)])</span><br><span class="line">        self.heads = [nn.Sequential(∗h) <span class="keyword">for</span> h <span class="keyword">in</span> heads]</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, inputs: <span class="type">List</span>[Tensor]</span>):</span><br><span class="line">        <span class="comment"># end up with one head for each input</span></span><br><span class="line">        <span class="keyword">return</span> [head(i) <span class="keyword">for</span> head, i <span class="keyword">in</span></span><br><span class="line">            <span class="built_in">zip</span>(self.heads, inputs)]</span><br></pre></td></tr></tbody></table></figure>
+
+<p>对于行2和行4，可以通过训练好的行1和行3模型重新在训练数据上计算domain-specific全局统计量即可，在实现时，可以如下：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CycleBatchNormList</span>(nn.ModuleList):</span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    A hacky way to implement domain-specific BatchNorm</span></span><br><span class="line"><span class="string">    if it's guaranteed that a fixed number of domains will be</span></span><br><span class="line"><span class="string">    called with fixed order.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, length, channels</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__([nn.BatchNorm2d(channels, affine=<span class="literal">False</span>) <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(length)])</span><br><span class="line">        <span class="comment"># shared affine, domain-specific BN</span></span><br><span class="line">        self.weight = nn.Parameter(torch.ones(channels))</span><br><span class="line">        self.bias = nn.Parameter(torch.zeros(channels))</span><br><span class="line">        self._pos = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        ret = self[self._pos](x)</span><br><span class="line">        self._pos = (self._pos + <span class="number">1</span>) % <span class="built_in">len</span>(self)</span><br><span class="line"></span><br><span class="line">        w = self.weight.reshape(<span class="number">1</span>, -<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">        b = self.bias.reshape(<span class="number">1</span>, -<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> ret * w + b</span><br><span class="line"></span><br><span class="line"><span class="comment"># 训练好模型，我们可以重新将BN层换成以上实现，就可以在训练数据上重新计算domain-specific全局统计量</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>RetinaNet面临的其实是特征层面的multi-domain问题，而且每个batch中的各个domain是均匀的。如果是数据层面的multi-domain，其面临的问题将会复杂，此时domain的分布比例也是多变的（BatchNorm可能会偏向训练数据较多的那个domain），但是总的原则是尽量减少不一致性，因为<strong>consistency is crucial</strong>。</p>
+<h3 id="Information-Leakage-within-a-Batch"><a href="#Information-Leakage-within-a-Batch" class="headerlink" title="Information Leakage within a Batch"></a><strong><strong>Information Leakage within a Batch</strong></strong></h3><p>BatchNorm面临的另外一个挑战，就是可能出现信息泄露，这里所说的信息泄露指的是模型学习到了利用mini-batch的信息来做预测，而这些其实并不是我们要学习的，因为这样模型可能难以对mini-batch里的每个sample单独做预测。</p>
+<p><img src="https://s2.loli.net/2024/03/25/rEbjz38tDIfgNm6.png" alt="exp_fig7.png"></p>
+<p>比如BatchNorm的作者曾做过这样一个实验，在ResNet50的训练过程中，NBS=32，但是保证里面包含16个类别，每个类别有2个图像，这样一种特殊的设计要模型在训练过程中强制记忆了这种模式（可能是每个mini-batch中必须有同类别存在），那么在测试时如果输入不是这种设计，效果就会变差。这个在验证集上不同处理结果如上所示，可以看到测试时无论是采用全局统计量还是random mini-batch统计量，效果均较差，但是如果采用和训练过程同样的模式，效果就比较好。这其实也从侧面说明保持一致是多么的重要。</p>
+<p>前面说过，如果在R-CNN的head加入BatchNorm，那么在测试时采用mini-batch统计量会比全局统计量会效果更好，这里面其实也存在信息泄露的问题。对于每个GPU只有一个image的情况，每个mini-batch里面的RoIs全部来自于一个图像，这时候模型就可能依赖mini-batch来做预测，那么测试时采用全局统计量效果就会差了，对于每个GPU有多个图像时，情况还稍好一些，所以原来的结果中单卡单图像效果最差。一种解决方案是采用shuffle BN，就是head进行处理前，先随机打乱所有卡上的RoIs特征，每个卡分配随机的RoIs，这样就避免前面那个可能出现的信息泄露，head处理完后再shuffle回来，具体处理流程如下所示：</p>
+<p><img src="https://s2.loli.net/2024/03/25/DLsXo2dYGUl1ev5.png" alt="exp_fig8.png"></p>
+<p>这个具体的代码实现见<a target="_blank" rel="noopener" href="https://github.com/facebookresearch/detectron2/blob/60fd4885d7cfd52d4267d1da9ebb6b2b9a3fc937/projects/Rethinking-BatchNorm/configs/mask_rcnn_BNhead_shuffle.py">mask_rcnn_BNhead_shuffle.py</a>。其实在MoCo中也使用了shuffle BN来防止信息泄露。另外还是可以采用SyncBN来避免这种问题（或者说是global BN，增大了mini-batch，这样就可以减弱上述影响）。具体的对比结果如下所示，可以看到采用shuffle BN和SyncBN均可以避免信息泄露，得到较好的效果。注意shuffle BN的 cross-GPU synchronization要比SyncBN要少，效率更高一些。</p>
+<p>另外一个常见的场景是对比学习中信息泄露，因为对比学习往往需要对同一个图像做不同的augmentations来作为正样本，这其实一个sample既当输入又当目标，mini-batch可能会泄露信息导致模型学习不到好的特征（普通的BN是per-GPU normalize，这意味正样本的计算都在同一个local mini-batch中）。MoCo采用的是shuffle BN（其实是encode_k采用shuffle BN，这样两次正样本的计算就有区别），而SimCLR和BYOL采用的是SyncBN（扩大mini-batch减少影响）。另外旷视提出的<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2101.07525">Momentum^2 Teacher</a>来采用moving average statistics来防止信息泄露。一个插曲是这篇<a target="_blank" rel="noopener" href="https://generallyintelligent.ai/blog/2020-08-24-understanding-self-supervised-contrastive-learning/">博客</a>指出其实BN才是不需要负样本的BYOL成功的关键，因为BN隐式地引入了负样本从而形成了对比学习，虽然后面BYOL又证明不需要BN也可以取得好的效果，但是还是比BN差一点。这说明BN确实能够隐式编码batch信息。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h3><p>一个简单的BatchNorm，如果我们使用不当，往往会出现一些让人意料的结果，所以要谨慎处理。总结来看，主要有如下结论和指南：</p>
+<ul>
+<li>模型在未收敛时使用EMA统计量来评估模型是不稳定的，一种替代方案是PreciseBN；</li>
+<li>BatchNorm本身存在训练和测试的不一致性，特别是NBS较少时，这种不一致会更强，可用的方案是测试时也采用mini-batch统计量或者采用FrozenBN；</li>
+<li>在domain shift场景中，最好基于target domain数据重新计算全局统计量，在multi-domain数据训练时，要特别注意处理的一致性；</li>
+<li>BatchNorm会存在信息泄露的风险，这处理mini-batch时要防止特殊的出现。</li>
+</ul>
+<p>我个人认为下列两个原则可能是普适的：</p>
+<ul>
+<li>尽量减少训练和测试的不一致行为，不一致行为会导致测试时性能恶化；</li>
+<li>尽量减少训练过程的bias而应适当增加noise，以防止模型训练走捷径而学习到无法泛化的特征。</li>
+</ul>
+<h1 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a><strong><strong>Dropout</strong></strong></h1><p>dropout在训练时，以一定的概率p来drop掉相应的神经网络节点，以(1-p)的概率来retain相应的神经网络节点，这相当于每一次训练时模型的网络结构都不一样，也可以理解为训练时添加了噪声，所以能够有效减少过拟合。<br>问题呢，是出在测试时，因为训练的时候以概率p drop了一些节点，比如dropout设置为0.5，隐藏层共有6个节点，那训练的时候有3个节点的值被丢弃，而测试的时候这6个节点都被保留下来，这就导致了训练和测试的时候以该层节点为输入的下一层的神经网络节点获取的期望会有量级上的差异。为了解决这个问题，在训练时对当前dropout层的输出数据除以（1-p），之后再输入到下一层的神经元节点，以作为失活神经元的补偿，以使得在训练时和测试时每一层的输入有大致相同的期望。</p>
+<h1 id="Normalization和Dropout搭配"><a href="#Normalization和Dropout搭配" class="headerlink" title="Normalization和Dropout搭配"></a><strong><strong>Normalization和Dropout搭配</strong></strong></h1><p>产生的问题：方差偏移</p>
+<p><img src="https://s2.loli.net/2024/03/25/ai7ovKNGmP4zrEs.png" alt="exp_fig9.png"></p>
+<p>首先，先明确dropout和BN结合使用使模型性能下降的连接方式，用通俗的话讲，就是你先在网络的内部使用dropout，随后再跟上一个BN层，而且这个BN层还不止一个。那么问题出在哪呢？原因有二。首先，如上图所示，因为训练时采用了dropout，虽然通过除以(1-p)的方式来使得训练和测试时，每个神经元输入的期望大致相同，但是他们的方差却不一样。第二，BN是采用训练时得到的均值和方差对数据进行归一化的，现在dropout层的方差都不一样了，一步错步步错，最终导致输出不准确，影响最后的性能。</p>
+<p>针对方差偏移，<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1801.05134.pdf">论文</a>给出了两种解决方案：</p>
+<ul>
+<li>拒绝方差偏移，只在所有BN层的后面采用dropout层，现在大部分开源的模型，都在网络的中间加了BN，你也就只能在softmax的前一层加加dropout了，我亲自试过，效果还行，至少不会比不加dropout差。还有另外一种方法是模型训练完后，固定参数，以测试模式对训练数据求BN的均值和方差，再对测试数据进行归一化，论文证明这种方法优于baseline。</li>
+<li>dropout原文提出了一种高斯dropout，论文再进一步对高斯dropout进行扩展，提出了一个均匀分布Dropout，这样做带来了一个好处就是这个形式的Dropout（又称为“Uout”）对方差的偏移的敏感度降低了，总得来说就是整体方差偏地没有那么厉害了。可以看得出来实验性能整体上比第一个方案好，这个方法显得更加稳定。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://thinksky5124.github.io">Thyssen Wen</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://thinksky5124.github.io/2022/08/18/%E7%BD%91%E7%BB%9C%E6%AD%A3%E5%88%99%E5%8C%96/">https://thinksky5124.github.io/2022/08/18/%E7%BD%91%E7%BB%9C%E6%AD%A3%E5%88%99%E5%8C%96/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://thinksky5124.github.io" target="_blank">Thyssen Wen's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a><a class="post-meta__tags" href="/tags/%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8C%96/">模型优化</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/08/18/%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8C%96/" title="权重初始化"><img class="cover" src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">权重初始化</div></div></a></div><div class="next-post pull-right"><a href="/2022/08/18/%E8%B8%A9%E5%9D%91%E8%AE%B0/" title="Pytorch分布式训练踩坑"><img class="cover" src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Pytorch分布式训练踩坑</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/08/18/%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8C%96/" title="权重初始化"><img class="cover" src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-18</div><div class="title">权重初始化</div></div></a></div><div><a href="/2022/08/18/CPU_GPU%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/" title="CPU&#x2F;GPU联合编程"><img class="cover" src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-18</div><div class="title">CPU&#x2F;GPU联合编程</div></div></a></div><div><a href="/2022/08/18/CUDA%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/" title="CUDA编程模型基础"><img class="cover" src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-18</div><div class="title">CUDA编程模型基础</div></div></a></div><div><a href="/2022/08/18/Dispatcher/" title="Dispatcher"><img class="cover" src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-18</div><div class="title">Dispatcher</div></div></a></div><div><a href="/2022/08/18/DistributedDataParallel_%E5%88%9D%E5%A7%8B%E5%8C%96%E6%96%B9%E6%B3%95&%E5%AD%98%E5%82%A8/" title="DistributedDataParallel 初始化方法&amp;存储"><img class="cover" src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-18</div><div class="title">DistributedDataParallel 初始化方法&amp;存储</div></div></a></div><div><a href="/2022/08/18/DistributedDataParallel_%E6%80%BB%E8%BF%B0&%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8/" title="DistributedDataParallel 总述&amp;如何使用"><img class="cover" src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-18</div><div class="title">DistributedDataParallel 总述&amp;如何使用</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://avatars.githubusercontent.com/u/40914433?v=4" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Thyssen Wen</div><div class="author-info__description">既然选择远方，就要风雨兼程</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">17</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Thinksky5124"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">不定期更新Blog，主要研究图像方面的人工智能，人工智能硬件等</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%AD%A3%E5%88%99%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">网络正则化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Normalization"><span class="toc-number">2.</span> <span class="toc-text">Normalization</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Batch-Normalization"><span class="toc-number">2.1.</span> <span class="toc-text">Batch Normalization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Layer-Normalization"><span class="toc-number">2.2.</span> <span class="toc-text">Layer Normalization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Batch-Normalization-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">2.3.</span> <span class="toc-text">Batch Normalization 注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Population-Statistics"><span class="toc-number">2.3.1.</span> <span class="toc-text">Population Statistics</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Batch-in-Training-and-Testing"><span class="toc-number">2.3.2.</span> <span class="toc-text">Batch in Training and Testing</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Information-Leakage-within-a-Batch"><span class="toc-number">2.3.3.</span> <span class="toc-text">Information Leakage within a Batch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">2.3.4.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Dropout"><span class="toc-number">3.</span> <span class="toc-text">Dropout</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Normalization%E5%92%8CDropout%E6%90%AD%E9%85%8D"><span class="toc-number">4.</span> <span class="toc-text">Normalization和Dropout搭配</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/04/16/hello-world/" title="Hello World"><img src="https://s2.loli.net/2024/03/25/TXt51eJvamH9bjP.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2024/04/16/hello-world/" title="Hello World">Hello World</a><time datetime="2024-04-16T08:57:05.647Z" title="发表于 2024-04-16 16:57:05">2024-04-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/25/TensorRT_deploy_and_infer/" title="TensorRT 模型构建与推理"><img src="https://s2.loli.net/2024/03/25/TXt51eJvamH9bjP.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="TensorRT 模型构建与推理"/></a><div class="content"><a class="title" href="/2024/03/25/TensorRT_deploy_and_infer/" title="TensorRT 模型构建与推理">TensorRT 模型构建与推理</a><time datetime="2024-03-25T03:17:41.679Z" title="发表于 2024-03-25 11:17:41">2024-03-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/18/CPU_GPU%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/" title="CPU/GPU联合编程"><img src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CPU/GPU联合编程"/></a><div class="content"><a class="title" href="/2022/08/18/CPU_GPU%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/" title="CPU/GPU联合编程">CPU/GPU联合编程</a><time datetime="2022-08-18T08:00:00.000Z" title="发表于 2022-08-18 16:00:00">2022-08-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/18/CUDA%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/" title="CUDA编程模型基础"><img src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CUDA编程模型基础"/></a><div class="content"><a class="title" href="/2022/08/18/CUDA%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/" title="CUDA编程模型基础">CUDA编程模型基础</a><time datetime="2022-08-18T08:00:00.000Z" title="发表于 2022-08-18 16:00:00">2022-08-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/18/Dispatcher/" title="Dispatcher"><img src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Dispatcher"/></a><div class="content"><a class="title" href="/2022/08/18/Dispatcher/" title="Dispatcher">Dispatcher</a><time datetime="2022-08-18T08:00:00.000Z" title="发表于 2022-08-18 16:00:00">2022-08-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Thyssen Wen</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>

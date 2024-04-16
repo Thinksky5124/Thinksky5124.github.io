@@ -1,0 +1,253 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CPU并行计算 | Thyssen Wen's Blog</title><meta name="author" content="Thyssen Wen"><meta name="copyright" content="Thyssen Wen"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="个人学习CMU并行计算课程时的笔记、总结等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CPU并行计算">
+<meta property="og:url" content="https://thinksky5124.github.io/2022/07/21/cpu_computer/index.html">
+<meta property="og:site_name" content="Thyssen Wen&#39;s Blog">
+<meta property="og:description" content="个人学习CMU并行计算课程时的笔记、总结等">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png">
+<meta property="article:published_time" content="2022-07-21T23:03:20.000Z">
+<meta property="article:modified_time" content="2024-03-25T04:19:12.246Z">
+<meta property="article:author" content="Thyssen Wen">
+<meta property="article:tag" content="并行计算">
+<meta property="article:tag" content="CMU课程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png"><link rel="shortcut icon" href="https://avatars.githubusercontent.com/u/40914433?v=4"><link rel="canonical" href="https://thinksky5124.github.io/2022/07/21/cpu_computer/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CPU并行计算',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-25 12:19:12'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Thyssen Wen's Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://avatars.githubusercontent.com/u/40914433?v=4" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">17</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.dlut.edu.cn/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png')"><nav id="nav"><span id="blog-info"><a href="/" title="Thyssen Wen's Blog"><span class="site-name">Thyssen Wen's Blog</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" target="_blank" rel="noopener" href="https://www.dlut.edu.cn/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">CPU并行计算</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-07-21T23:03:20.000Z" title="发表于 2022-07-22 07:03:20">2022-07-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-25T04:19:12.246Z" title="更新于 2024-03-25 12:19:12">2024-03-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/">并行计算</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="CPU并行计算"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Lecture-2-A-Modern-Multi-Core-Processor"><a href="#Lecture-2-A-Modern-Multi-Core-Processor" class="headerlink" title="Lecture 2 A Modern Multi-Core Processor"></a>Lecture 2 A Modern Multi-Core Processor</h1><ul>
+<li>理解并行计算的形式</li>
+<li>理解延迟(latency)和带宽(bandwidth)</li>
+</ul>
+<h2 id="Parallel-Execution"><a href="#Parallel-Execution" class="headerlink" title="Parallel Execution"></a>Parallel Execution</h2><h3 id="单线程执行-编译器定义"><a href="#单线程执行-编译器定义" class="headerlink" title="单线程执行 - 编译器定义"></a>单线程执行 - 编译器定义</h3><p>例程:使用泰勒公式计算$sin(x)$。</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">sinx</span><span class="params">(<span class="type">int</span> N,<span class="type">int</span> terms, <span class="type">float</span>* x,<span class="type">float</span>* result)</span></span>{</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;N;i++){</span><br><span class="line">        <span class="type">float</span> value = x[i];</span><br><span class="line">        <span class="type">float</span> numer = x[i] * x[i] *x[i];</span><br><span class="line">        <span class="type">int</span> denom = <span class="number">6</span>;</span><br><span class="line">        <span class="type">int</span> sign = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;= terms;j++){</span><br><span class="line">            value += sign * numer / denom;</span><br><span class="line">            numer *= x[i] * x[i];</span><br><span class="line">            denom *= (<span class="number">2</span>*j+<span class="number">2</span>)*(<span class="number">2</span>*j+<span class="number">3</span>);</span><br><span class="line">            sign *= <span class="number">-1</span>;</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        result[i]=value;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="https://s2.loli.net/2024/03/25/JDzKdeycxpHo59h.jpg" alt="单核单线程单流水处理模型"></p>
+<ul>
+<li>解码模块(Fetch/Decode)读取指令</li>
+<li>ALU模块负责执行</li>
+<li>上下文存储器(Exceution Context)负责存储执行数据</li>
+</ul>
+<h3 id="多线程执行-用户定义"><a href="#多线程执行-用户定义" class="headerlink" title="多线程执行 - 用户定义"></a>多线程执行 - 用户定义</h3><p>概念：指令级并行 instruction level parallelism (ILP)</p>
+<p><img src="https://s2.loli.net/2024/03/25/oN83kVxGqgOEJUd.jpg" alt="超标量处理器模型"><br><img src="https://s2.loli.net/2024/03/25/2meGLwOuWCJj4is.jpg" alt="多核处理器模型"></p>
+<p>例程：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>{</span><br><span class="line">    <span class="type">int</span> N;</span><br><span class="line">    <span class="type">int</span> terms;</span><br><span class="line">    <span class="type">float</span> *x;</span><br><span class="line">    <span class="type">float</span> result;</span><br><span class="line">} my_args;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">parallel_sinx</span><span class="params">(<span class="type">int</span> N,<span class="type">int</span> terms, <span class="type">float</span>* x,<span class="type">float</span>* result)</span></span>{</span><br><span class="line">    <span class="type">pthread_t</span> thread_id;</span><br><span class="line">    my_args args;</span><br><span class="line"></span><br><span class="line">    args.N=<span class="number">2</span>/N;</span><br><span class="line">    args.terms=terms;</span><br><span class="line">    args.x=x;</span><br><span class="line">    args.result=result;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">pthread_create</span>(&amp;thread_id, <span class="literal">NULL</span>, my_thread_start, &amp;args);<span class="comment">//launch thread</span></span><br><span class="line">    <span class="built_in">sinx</span>(N-args.N,terms,x+args.N,result+args.N);</span><br><span class="line">    <span class="built_in">pthread_join</span>(thread_id, <span class="literal">NULL</span>);</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">sinx</span><span class="params">(<span class="type">int</span> N,<span class="type">int</span> terms, <span class="type">float</span>* x,<span class="type">float</span>* result)</span></span>{</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;N;i++){</span><br><span class="line">        <span class="type">float</span> value = x[i];</span><br><span class="line">        <span class="type">float</span> numer = x[i] * x[i] *x[i];</span><br><span class="line">        <span class="type">int</span> denom = <span class="number">6</span>;</span><br><span class="line">        <span class="type">int</span> sign = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;= terms;j++){</span><br><span class="line">            value += sign * numer / denom;</span><br><span class="line">            numer *= x[i] * x[i];</span><br><span class="line">            denom *= (<span class="number">2</span>*j+<span class="number">2</span>)*(<span class="number">2</span>*j+<span class="number">3</span>);</span><br><span class="line">            sign *= <span class="number">-1</span>;</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        result[i]=value;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>上述例程表示线程级并行的代码描述，通过将整个工作分散分配到不同的处理器核中，以获得加速的效果。工作的分配方式将很大程度上影响加速的效果。</p>
+<h3 id="数据并行-用户定义、编译器定义"><a href="#数据并行-用户定义、编译器定义" class="headerlink" title="数据并行 - 用户定义、编译器定义"></a>数据并行 - 用户定义、编译器定义</h3><p><img src="https://s2.loli.net/2024/03/25/T8FkUAmjd2saXMn.jpg" alt="SMID"></p>
+<p>概念：SMID 单指令多数据处理</p>
+<p>使用AVX指令集的代码如下：</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;immintrin.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">sinx</span><span class="params">(<span class="type">int</span> N, <span class="type">int</span> terms, <span class="type">float</span>* x, <span class="type">float</span>* sinx)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="type">float</span> three_fact = <span class="number">6</span>; <span class="comment">// 3!</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i=<span class="number">0</span>; i&lt;N; i+=<span class="number">8</span>)</span><br><span class="line">    {</span><br><span class="line">        __m256 origx = _mm256_load_ps(&amp;x[i]);</span><br><span class="line">        __m256 value = origx;</span><br><span class="line">        __m256 numer = _mm256_mul_ps(origx, _mm256_mul_ps(origx, origx));</span><br><span class="line">        __m256 denom = _mm256_broadcast_ss(&amp;three_fact);</span><br><span class="line">        <span class="type">int</span> sign = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=terms; j++)</span><br><span class="line">        {</span><br><span class="line">            <span class="comment">// value += sign * numer / denom</span></span><br><span class="line">            __m256 tmp = _mm256_div_ps(_mm256_mul_ps(_mm256_broadcast_ss(sign),numer),denom);</span><br><span class="line">            value = _mm256_add_ps(value, tmp);</span><br><span class="line">            numer = _mm256_mul_ps(numer, _mm256_mul_ps(origx, origx));</span><br><span class="line">            denom = _mm256_mul_ps(denom, _mm256_broadcast_ss((<span class="number">2</span>*j+<span class="number">2</span>) * (<span class="number">2</span>*j+<span class="number">3</span>)));</span><br><span class="line">            sign *= <span class="number">-1</span>;</span><br><span class="line">        }</span><br><span class="line">        _mm256_store_ps(&amp;sinx[i], value);</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>按照上图所示CPU模型，通过使用SMID单个核可以一次指令同时处理8个数据，达到并行处理数据的效果。</p>
+<p>另一种自动优化代码的写法，前提是循环loop之间相互独立</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">sinx</span><span class="params">(<span class="type">int</span> N, <span class="type">int</span> terms, <span class="type">float</span>* x, <span class="type">float</span>* result)</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">    <span class="comment">// declare independent loop iterations</span></span><br><span class="line">    forall (<span class="type">int</span> i from <span class="number">0</span> to N<span class="number">-1</span>)</span><br><span class="line">    {</span><br><span class="line">        <span class="type">float</span> value = x[i];</span><br><span class="line">        <span class="type">float</span> numer = x[i] * x[i] * x[i];</span><br><span class="line">        <span class="type">int</span> denom = <span class="number">6</span>; <span class="comment">// 3!</span></span><br><span class="line">        <span class="type">int</span> sign = <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j=<span class="number">1</span>; j&lt;=terms; j++)</span><br><span class="line">        {</span><br><span class="line">            value += sign * numer / denom</span><br><span class="line">            numer *= x[i] * x[i];</span><br><span class="line">            denom *= (<span class="number">2</span>*j+<span class="number">2</span>) * (<span class="number">2</span>*j+<span class="number">3</span>);</span><br><span class="line">            sign *= <span class="number">-1</span>;</span><br><span class="line">        }</span><br><span class="line">        result[i] = value;</span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="条件执行"><a href="#条件执行" class="headerlink" title="条件执行"></a>条件执行</h3><p>假设数据并行处理器需要执行如下代码</p>
+<figure class="highlight c++"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> x = A[i];</span><br><span class="line"><span class="keyword">if</span>(x&gt;<span class="number">0</span>){</span><br><span class="line">    <span class="type">float</span> tmp = <span class="built_in">exp</span>(x,<span class="number">5.f</span>);</span><br><span class="line">    x = tmp + kMyConst2;</span><br><span class="line">}<span class="keyword">else</span>{</span><br><span class="line">    <span class="type">float</span> tmp = kMyConst1;</span><br><span class="line">    x = <span class="number">2.f</span> * tmp;</span><br><span class="line">}</span><br><span class="line">result[i] = x;</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在处理器进行分支预测之后，处理器会首先并行执行值未真的那些ALU，再之后执行那些值为假的ALU，以达到并行处理的效果。</p>
+<p><img src="https://s2.loli.net/2024/03/25/MPSRkb4tX7DHnwu.png" alt="在数据并行时进行条件执行"></p>
+<h3 id="SMID的有关概念"><a href="#SMID的有关概念" class="headerlink" title="SMID的有关概念"></a>SMID的有关概念</h3><ul>
+<li>要使用并行处理需要程序手动进行特定编码，比如使用：SSE、AVX等代码。</li>
+<li>但是一旦使用并行处理，编译器无法检查与保证循环的独立性，需要自行保证</li>
+<li>GPU的数据并行处理性能要高于CPU的数据并行处理性能</li>
+</ul>
+<p>比如：</p>
+<p><img src="https://s2.loli.net/2024/03/25/PAJuyXgRSYkdBnt.png" alt="CPU与GPU的SMID能力对比"></p>
+<h2 id="Accessing-Memory"><a href="#Accessing-Memory" class="headerlink" title="Accessing Memory"></a>Accessing Memory</h2><h3 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h3><ul>
+<li>内存延时：内存延迟是指等待对系统内存中存储数据的访问完成时引起的延期。 单位：100机器周期、100毫秒</li>
+<li>内存带宽：内存系统可以提供给处理器数据的速度。 单位：20GB/s</li>
+<li>吞吐量(throughput):芯片单位时间处理数据的多少</li>
+</ul>
+<p>现代处理器中不可避免因为内存延时而降低CPU处理速率，但是可以通过一些办法来“隐藏”内存延时，比如：</p>
+<ul>
+<li>多级缓存</li>
+<li>预储存</li>
+<li>多线程技术</li>
+<li>存储执行上下文</li>
+</ul>
+<p><img src="https://s2.loli.net/2024/03/25/Kmn3pBR7udSCboV.png" alt="CPU与GPU的内存结构对比"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://thinksky5124.github.io">Thyssen Wen</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://thinksky5124.github.io/2022/07/21/cpu_computer/">https://thinksky5124.github.io/2022/07/21/cpu_computer/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://thinksky5124.github.io" target="_blank">Thyssen Wen's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/">并行计算</a><a class="post-meta__tags" href="/tags/CMU%E8%AF%BE%E7%A8%8B/">CMU课程</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/07/21/class_info/" title="CMUParellelComputer课程概述"><img class="cover" src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">CMUParellelComputer课程概述</div></div></a></div><div class="next-post pull-right"><a href="/2021/01/28/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%9F%BA%E7%A1%802/" title="数字图像处理基础（二）"><img class="cover" src="https://s2.loli.net/2024/03/25/6yXGKnZYaMCQRoz.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">数字图像处理基础（二）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/01/07/CPU%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/" title="CPU并行计算"><img class="cover" src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-07</div><div class="title">CPU并行计算</div></div></a></div><div><a href="/2022/07/21/class_info/" title="CMUParellelComputer课程概述"><img class="cover" src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-22</div><div class="title">CMUParellelComputer课程概述</div></div></a></div><div><a href="/2021/01/07/%E8%AF%BE%E7%A8%8B%E6%A6%82%E8%BF%B0/" title="CMUParellelComputer课程概述"><img class="cover" src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-07</div><div class="title">CMUParellelComputer课程概述</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://avatars.githubusercontent.com/u/40914433?v=4" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Thyssen Wen</div><div class="author-info__description">既然选择远方，就要风雨兼程</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">23</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">17</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Thinksky5124"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">不定期更新Blog，主要研究图像方面的人工智能，人工智能硬件等</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Lecture-2-A-Modern-Multi-Core-Processor"><span class="toc-number">1.</span> <span class="toc-text">Lecture 2 A Modern Multi-Core Processor</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Parallel-Execution"><span class="toc-number">1.1.</span> <span class="toc-text">Parallel Execution</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C-%E7%BC%96%E8%AF%91%E5%99%A8%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.1.</span> <span class="toc-text">单线程执行 - 编译器定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%89%A7%E8%A1%8C-%E7%94%A8%E6%88%B7%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.2.</span> <span class="toc-text">多线程执行 - 用户定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%B9%B6%E8%A1%8C-%E7%94%A8%E6%88%B7%E5%AE%9A%E4%B9%89%E3%80%81%E7%BC%96%E8%AF%91%E5%99%A8%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.3.</span> <span class="toc-text">数据并行 - 用户定义、编译器定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E6%89%A7%E8%A1%8C"><span class="toc-number">1.1.4.</span> <span class="toc-text">条件执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SMID%E7%9A%84%E6%9C%89%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.5.</span> <span class="toc-text">SMID的有关概念</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Accessing-Memory"><span class="toc-number">1.2.</span> <span class="toc-text">Accessing Memory</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AF%E8%AF%AD"><span class="toc-number">1.2.1.</span> <span class="toc-text">术语</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/04/16/hello-world/" title="Hello World"><img src="https://s2.loli.net/2024/03/25/TXt51eJvamH9bjP.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2024/04/16/hello-world/" title="Hello World">Hello World</a><time datetime="2024-04-16T08:57:05.647Z" title="发表于 2024-04-16 16:57:05">2024-04-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/25/TensorRT_deploy_and_infer/" title="TensorRT 模型构建与推理"><img src="https://s2.loli.net/2024/03/25/TXt51eJvamH9bjP.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="TensorRT 模型构建与推理"/></a><div class="content"><a class="title" href="/2024/03/25/TensorRT_deploy_and_infer/" title="TensorRT 模型构建与推理">TensorRT 模型构建与推理</a><time datetime="2024-03-25T03:17:41.679Z" title="发表于 2024-03-25 11:17:41">2024-03-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/18/CPU_GPU%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/" title="CPU/GPU联合编程"><img src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CPU/GPU联合编程"/></a><div class="content"><a class="title" href="/2022/08/18/CPU_GPU%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/" title="CPU/GPU联合编程">CPU/GPU联合编程</a><time datetime="2022-08-18T08:00:00.000Z" title="发表于 2022-08-18 16:00:00">2022-08-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/18/CUDA%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/" title="CUDA编程模型基础"><img src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CUDA编程模型基础"/></a><div class="content"><a class="title" href="/2022/08/18/CUDA%E7%BC%96%E7%A8%8B%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80/" title="CUDA编程模型基础">CUDA编程模型基础</a><time datetime="2022-08-18T08:00:00.000Z" title="发表于 2022-08-18 16:00:00">2022-08-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/18/Dispatcher/" title="Dispatcher"><img src="https://s2.loli.net/2024/03/25/UbvDSp43CogyTzO.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Dispatcher"/></a><div class="content"><a class="title" href="/2022/08/18/Dispatcher/" title="Dispatcher">Dispatcher</a><time datetime="2022-08-18T08:00:00.000Z" title="发表于 2022-08-18 16:00:00">2022-08-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By Thyssen Wen</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  btf.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>
